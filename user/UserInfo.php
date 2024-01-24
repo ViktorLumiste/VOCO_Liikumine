@@ -56,4 +56,3 @@ $conn->close();
     Enter Username: <input type="text" name="username">
     <input type="submit" name="submit" value="Submit">
 </form>
-
