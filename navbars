@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Black Navbar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Montserrat, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+        }
+
+
+
+        nav {
+            background-color: #000;
+            color: #fff;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+
+        nav .logo {
+            color: #fff;
+            text-decoration: none;
+            font-size: 24px;
+            margin-right: auto;
+        }
+
+        nav .logo img {
+            width: 400px;
+        }
+
+        nav div {
+            display: flex;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 35px;
+        }
+
+
+    </style>
+</head>
+<body>
+
+<nav>
+    <div id="Bottom-nav">
+        <div style="margin-left: auto;"></div>
+        <a href="#" class="logo"><img src="images/logo.png" alt="Your Logo"></a>
+        <div>
+            <a href="#">Artiklid</a>
+            <a href="#">Uudised</a>
+            <a href="#">Treenimine</a>
+            <a href="#">Galerii</a>
+            <a href="#">Kontakt</a>
+        </div>
+        <div style="margin-right: auto;"></div>
+    </div>
+</nav>
+
+<!-- Your page content goes here -->
+
+</body>
+<script src="https://kit.fontawesome.com/9616f6d837.js" crossorigin="anonymous">
+
+</script>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Website Title</title>
+    <link rel="stylesheet" href="stles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+
+</head>
+<body>
+
+<div class="DivTopbar">
+    <div class="DivTopbarContent">
+        <!-- Navigation Menu -->
+        <div class="DivTopbarRight">
+            <div class="ListMenuTopMenu">
+
+                </div>
+            </div>
+
+            <!-- Search Form -->
+            <div class="FormSearchform">
+                <div class="Label">
+                    <div class="OtsiKodulehelt">Otsi kodulehelt</div>
+                </div>
+                <div class="Icon"></div>
+            </div>
+        </div>
+
+        <!-- Social Icons -->
+        <div class="DivSocialicons">
+            <div class="Facebook"></div>
+            <div class="Tiktok"></div>
+            <div class="Instagram"></div>
+        </div>
+    </div>
+
+    <!-- User Account Section -->
+    <div class="Konto">
+        <img class="Customer" src="https://via.placeholder.com/30x30" alt="User Avatar">
+        <div class="Dog">Dog</div>
+    </div>
+</div>
+
+</body>
+</html>
