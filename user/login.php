@@ -15,13 +15,16 @@ if ($conn->connect_error) {
 }
 $username = $_POST['loginName'];
 $password = $_POST['loginPassword'];
-
 // Perform a simple query to check user credentials
-$sql = "SELECT * FROM KASUTAJAD WHERE Nimi='$username' AND Parool='$password'";
+$sql = "SELECT Parool FROM KASUTAJAD WHERE Nimi='$username'";
 $result = $conn->query($sql);
+$results = mysqli_fetch_assoc($result);
+$resultstring = $results['Parool'];
+$unhashed = password_verify($password,$resultstring);
+
 
 // Check if the query was successful
-if ($result !== false && $result->num_rows > 0) {
+if ($unhashed) {
     // User authentication successful
     http_response_code(200); // OK
     echo "Login successful!";
@@ -30,8 +33,6 @@ if ($result !== false && $result->num_rows > 0) {
     http_response_code(401); // Unauthorized
     echo "Login failed. Invalid username or password.";
 }
-echo $username;
-echo $password;
 // Close the database connection
 $conn->close();
 ?>
