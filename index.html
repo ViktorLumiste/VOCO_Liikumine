@@ -23,18 +23,16 @@
             <div>
                 <input class="search-bar" type="text" placeholder="Otsi...">
             </div>
-            <button id="login-btn" class="login-btn" onclick="openLoginPopup()" >Login</button>
+            <button id="login-btn" class="login-btn" onclick="openLoginPopup()">Login</button>
             <div id="account-btn">
-                <button class="login-btn" onclick="togglelisakonto_btn() ">Konto nimi<i id="accountArrow" class="fa-solid fa-arrow-right" style="transform: rotate(90deg); transition: opacity 0.3s ease" aria-hidden="true"></i></button>
+                <button class="login-btn" onclick="togglelisakonto_btn()">Konto nimi<i id="accountArrow" class="fa-solid fa-arrow-right" style="transform: rotate(90deg); transition: opacity 0.3s ease" aria-hidden="true"></i></button>
                 <div id="additionalButtons" class="additionalButtonsDiv">
-                    <li class="additionalButtons"><a >Minu Konto</a></li>
-                    <li class="additionalButtons"><a>V채lju</a></li>
-
+                    <li class="additionalButtons"><a onclick="logoutUser()">Minu Konto</a></li>
+                    <li class="additionalButtons"><a onclick="logoutUser()">Logi Välja</a></li>
                 </div>
             </div>
-
-
         </div>
+        
     </nav>
     <!-- Second Navbar -->
     <nav class="second-nav">
@@ -151,6 +149,12 @@
             additionalButtons.style.display = "none";
             accountArrow.style.transform = "rotate(180deg)";
         }
+    }
+    function logoutUser(){
+        localStorage.clear();
+        window.location.href = "https://lumisteviktor.ikt.khk.ee/liikumine_demo/";
+        console.log('All good')
+
     }
     
     function AddSessionID(username) {
