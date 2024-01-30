@@ -67,7 +67,7 @@ $conn->close();
     <option value='ope'>Õpetaja</option>
     <option value='opi'>Õpilane</option>
     </select><br>
-    Päev: <input type="date" name="day" required><br>
+    Päev: <input type="text" name="day" required><br>
     Algab: <input type="time" name="start" required><br>
     Lõpeb: <input type="time" name="end" required><br>
     Max Osalejate Arv: <input type="number" name="max" required><br>

@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sql = "SELECT * FROM KASUTAJAD WHERE Nimi = '$username'";
     $result = $conn->query($sql);
 
-    if ($result->num_rows > 0) {
+    if ($result !== false && $result->num_rows > 0) {
         // Display user data
         echo "<h2>User Data:</h2>";
         while ($row = $result->fetch_assoc()) {
@@ -31,8 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "Email: " . $row["Email"] . "<br>";
             echo "Password: " . $row["Parool"] . "<br>";
             echo "Phone: " . $row["Telefon"] . "<br>";
-            echo "Role: " . $row["roll"] . "<br>";// Replace with your actual column names
-            // Add more fields as needed
+            echo "Role: " . $row["roll"] . "<br>";
         }
     } else {
         echo "No user found with the provided username.";
@@ -56,3 +55,4 @@ $conn->close();
     Enter Username: <input type="text" name="username">
     <input type="submit" name="submit" value="Submit">
 </form>
+
