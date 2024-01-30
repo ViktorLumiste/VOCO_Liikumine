@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Double Navbar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+<!-- Container for the navbars -->
+<div class="navbars-container">
+    <!-- First Navbar -->
+    <nav class="first-nav">
+        <div class="social-icons">
+            <i class="fab fa-facebook"></i>
+            <i class="fab fa-tiktok"></i>
+            <i class="fab fa-instagram"></i>
+        </div>
+        <div class="search-login-icons">
+            <div>
+                <input class="search-bar" type="text" placeholder="Otsi...">
+            </div>
+            <button id="login-btn" class="login-btn" onclick="openLoginPopup()" >Login</button>
+            <div id="account-btn">
+                <button class="login-btn" onclick="togglelisakonto_btn() ">Konto nimi<i id="accountArrow" class="fa-solid fa-arrow-right" style="transform: rotate(90deg); transition: opacity 0.3s ease" aria-hidden="true"></i></button>
+                <div id="additionalButtons" class="additionalButtonsDiv">
+                    <li class="additionalButtons"><a >Minu Konto</a></li>
+                    <li class="additionalButtons"><a>V채lju</a></li>
+
+                </div>
+            </div>
+
+
+        </div>
+    </nav>
+    <!-- Second Navbar -->
+    <nav class="second-nav">
+        <a href="#" class="logo"><img src="images/logo.png" alt="Your Logo"></a>
+        <div>
+            <a href="#">Artiklid</a>
+            <a href="#">Uudised</a>
+            <a href="#">Treenimine</a>
+            <a href="#">Galerii</a>
+            <a href="#">Kontakt</a>
+        </div>
+    </nav>
+
+    <!-- Second Navbar -->
+</div>
+
+<!-- Your page content goes here -->
+
+
+<!-- Your page content ends here -->
+
+<!-- Login Pop-up Box -->
+<div class="login-popup" id="loginPopup">
+    <div class="login-popup-content">
+        <span class="close-popup" onclick="closeLoginPopup()">&times;</span>
+
+        <!-- Your login form goes here -->
+        <form id="loginForm" onSubmit="loginUser(event)">
+            <!-- Add your login form fields here -->
+            <label for="loginName">Username:</label><br>
+            <input type="text" id="loginName" name="loginName"><br>
+
+            <label for="loginPassword">Password:</label><br>
+            <input type="password" id="loginPassword" name="loginPassword"><br>
+
+            <a href="#" style="color: blue;">Forgot your password?</a><br>
+            <button type="submit">Login</button>
+            <br>
+            <p id="loginMessage"></p>
+            <br>
+
+            <p style="text-align: center; margin-top: 10px;">Need an account? <a href="#" style="color: blue" onclick="openRegistrationPopup()" ;>Sign
+                up</a></p>
+        </form>
+    </div>
+</div>
+<div class="login-popup" id="registrationPopup">
+    <div class="login-popup-content">
+        <span class="close-popup" onclick="closeRegistrationPopup()">&times;</span>
+
+        <!-- Your registration form goes here -->
+        <form id="registerForm" onSubmit="registerUser(event)">
+            <!-- Add your registration form fields here -->
+            <label for="regName">Nimi:</label><br>
+            <input type="text" id="regName" name="regName"><br>
+
+            <label for="regEmail">Email:</label><br>
+            <input type="email" id="regEmail" name="regEmail"><br>
+
+            <label for="regPassword">Parool:</label><br>
+            <input type="password" id="regPassword" name="regPassword"><br>
+
+            <label for="regPhone">Telefon:</label><br>
+            <input type="tel" id="regPhone" name="regPhone" pattern="[0-9+]+"><br>
+
+            <button type="submit">Register</button>
+            <br>
+            <p id="registerMessage"></p>
+            <br>
+            <p style="text-align: center; margin-top: 10px;">Already have an account? <a href="#"
+                                                                                         onclick="openLoginPopup()"
+                                                                                         style="color: blue;">Login</a>
+            </p>
+        </form>
+    </div>
+</div>
+<a id="menutogglebtn" class="togglebtn" href="#">&#x2261;</a>
+<script src="https://kit.fontawesome.com/9616f6d837.js" crossorigin="anonymous"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const toggleBtn = document.querySelector(".togglebtn");
+        const secondNav = document.querySelector(".second-nav");
+
+        toggleBtn.addEventListener("click", function () {
+            secondNav.classList.toggle("open");
+        });
+    });
+
+    function openLoginPopup() {
+        document.getElementById("loginPopup").style.display = "flex";
+        document.getElementById("registrationPopup").style.display = "none"
+    }
+
+    function closeLoginPopup() {
+        document.getElementById("loginPopup").style.display = "none";
+    }
+
+    function openRegistrationPopup() {
+        document.getElementById("registrationPopup").style.display = "flex";
+        document.getElementById("loginPopup").style.display = "none";
+    }
+
+    function closeRegistrationPopup() {
+        document.getElementById("registrationPopup").style.display = "none";
+    }
+
+    function togglelisakonto_btn() {
+        var additionalButtons = document.getElementById("additionalButtons");
+        var accountArrow = document.getElementById("accountArrow");
+        if (additionalButtons.style.display === "none") {
+            additionalButtons.style.display = "block";
+            accountArrow.style.transform = "rotate(90deg)";
+        } else {
+            additionalButtons.style.display = "none";
+            accountArrow.style.transform = "rotate(180deg)";
+        }
+    }
+    
+    function AddSessionID(username) {
+        var xhr = new XMLHttpRequest();
+    
+        var url = 'src/Kasutaja/session.php?username=' + encodeURIComponent(username);
+    
+        xhr.open('GET', url, true);
+    
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    // Parse the JSON response
+                    var jsonResponse = JSON.parse(xhr.responseText);
+    
+                    // Access the Kasutaja_ID property
+                    var kasutajaID = jsonResponse.sessionID.Kasutaja_ID;
+    
+                    // Log or use the extracted value
+                    console.log(kasutajaID);
+                    localStorage.setItem("sessionID", kasutajaID);
+                    
+                } else {
+                    console.error('Request failed with status:', xhr.status);
+                }
+            }
+        };
+    
+        xhr.send();
+    }
+    function registerUser(e) {
+        e.preventDefault();
+        var regName = document.getElementById("regName").value;
+        var regEmail = document.getElementById("regEmail").value;
+        var regPassword = document.getElementById("regPassword").value;
+        var regPhone = document.getElementById("regPhone").value;
+
+        // Make an AJAX request to your PHP registration script
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "src/Kasutaja/register.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    // Registration successful
+                    // Optionally, you can handle the response from the server
+                    document.getElementById("registerMessage").innerHTML = "Registration successful!";
+                } else {
+                    // Registration failed
+                    // Optionally, you can handle the response from the server
+                    document.getElementById("registerMessage").innerHTML = "Registration failed. Please try again.";
+                }
+            }
+        };
+
+        xhr.send("regName=" + encodeURIComponent(regName) +
+                 "&regEmail=" + encodeURIComponent(regEmail) +
+                 "&regPassword=" + encodeURIComponent(regPassword) +
+                 "&regPhone=" + encodeURIComponent(regPhone));
+    }
+
+    function openRegistrationPopup() {
+        document.getElementById("registrationPopup").style.display = "flex";
+        document.getElementById("loginPopup").style.display = "none";
+    }
+
+    function closeRegistrationPopup() {
+        document.getElementById("registrationPopup").style.display = "none";
+        // Optionally, you can reset the registration form fields here
+        document.getElementById("regName").value = "";
+        document.getElementById("regEmail").value = "";
+        document.getElementById("regPassword").value = "";
+        document.getElementById("regPhone").value = "";
+        document.getElementById("registerMessage").innerHTML = "";
+    }
+
+
+
+    function loginUser(e) {
+    e.preventDefault();
+    var username = document.getElementById("loginName").value;
+    var password = document.getElementById("loginPassword").value;
+
+    // Make an AJAX request to your PHP script
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "src/Kasutaja/login.php", true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                // Login successful
+                AddSessionID(username); // Pass username as a parameter
+                document.getElementById("loginMessage").innerHTML = "Login successful!";
+            } else {
+                // Login failed
+                document.getElementById("loginMessage").innerHTML = "Login failed. Invalid username or password.";
+            }
+        }
+    };
+
+    xhr.send("loginName=" + encodeURIComponent(username) + "&loginPassword=" + encodeURIComponent(password));
+}
+    
+</script>
+</body>
+</html>
