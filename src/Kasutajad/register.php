@@ -9,7 +9,7 @@ $password = "2$9?,bzk+VN0";
 
 // Create connection for reading data
 $conn = mysqli_connect($servername, $username, $password, $database);
-
+// Check if the connection failed
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
@@ -25,7 +25,7 @@ $role = $_POST['regRole'];
 
 // Hash the password for security
 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-// SQL query to insert data into the 'users' table
+// Insert the user data into the db
 $sql = "INSERT INTO KASUTAJAD (Nimi, Email, Parool, Pilt, Telefon,roll) VALUES ('$name', '$email', '$hashedPassword', '$picture','$phone','$role')";
 
 if ($conn->query($sql) === TRUE) {

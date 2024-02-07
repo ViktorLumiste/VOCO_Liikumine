@@ -9,27 +9,29 @@ $password = "2$9?,bzk+VN0";
 
 // Create connection for reading data
 $conn = mysqli_connect($servername, $username, $password, $database);
-
+// Check if the connection failed
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
+// Wait until the user sends a post request
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Get the username from the request
     $username = $_POST["username"];
 
     // Fetch column names only if a username is provided
     if (!empty($username)) {
         $result = $conn->query("SHOW COLUMNS FROM KASUTAJAD");
-
+        // Check if results are empty
         if ($result === false) {
             die("Error retrieving column names: " . $conn->error);
         }
-
+        // If results are not empty add them to an array
         $columns = array();
         while ($row = $result->fetch_assoc()) {
             $columns[] = $row['Field'];
         }
     }
-
+    //Update the user data based on how many columns were changed
     foreach ($columns as $column) {
         if (isset($_POST[$column])) {
             $columnValue = $_POST[$column];
@@ -63,6 +65,7 @@ $conn->close();
 
         <div id="columnInputs" style="display: none;">
             <?php
+            //Display as many fields as the user has in database
             if (isset($columns)) {
                 foreach ($columns as $column) {
                     echo "<label for='$column'>$column:</label>";

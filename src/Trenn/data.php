@@ -9,21 +9,22 @@ $password = "2$9?,bzk+VN0";
 
 // Create connection for reading data
 $conn = mysqli_connect($servername, $username, $password, $database);
-
+// Check if the connection failed
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
 
-
+// Wait until a user posts a request
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    //Get the start time from the user
     $starttime = $_POST["starttime"];
-    // SQL query to retrieve user data based on username
+    // SQL query to retrieve user data based on start time
     $sql = "SELECT k.Nimi, t.* FROM TRENNID t join KASUTAJAD k on t.Treeneri_ID=k.Kasutaja_ID WHERE t.Algab = '$starttime'";
     $result = $conn->query($sql);
     
     if ($result != false & $result->num_rows > 0) {
-        // Display user data
+        // Display user data if any was found
         echo "<h2>Sports Data:</h2>";
         while ($row = $result->fetch_assoc()) {
             echo "Treener: " . $row["Nimi"] . "<br>";
@@ -34,12 +35,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "Max_Osalejate_arv: " . $row["Max_Osalejate_arv"] . "<br>";
         }
     } else {
+        // No data found
         echo "No user found with the provided username.";
         echo $starttime . "<br>";
         echo $sql . "<br>";
     }
 }
-
+// Close the database connection
 $conn->close();
 ?>
 

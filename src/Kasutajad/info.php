@@ -9,22 +9,21 @@ $password = "2$9?,bzk+VN0";
 
 // Create connection for reading data
 $conn = mysqli_connect($servername, $username, $password, $database);
-
+// Check if the connection failed
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-
-
+// Wait until the user sends a post request
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST["username"];
 
     // SQL query to retrieve user data based on username
     $sql = "SELECT * FROM KASUTAJAD WHERE Nimi = '$username'";
     $result = $conn->query($sql);
-
+    // Check if results are empty
     if ($result !== false && $result->num_rows > 0) {
-        // Display user data
+        // Display user data after entering name
         echo "<h2>User Data:</h2>";
         while ($row = $result->fetch_assoc()) {
             echo "Username: " . $row["Nimi"] . "<br>";
