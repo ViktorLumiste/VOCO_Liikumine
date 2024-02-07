@@ -1,26 +1,14 @@
 <?php
-$servername = "localhost";
-$database = "lumisteviktor_VOCO_Liikumine";
-$username = "lumisteviktor";
-$password = "2$9?,bzk+VN0";
+// Start PHP session
+session_start();
 
-$conn = mysqli_connect($servername, $username, $password, $database);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+// Check if the user is logged in
+if (isset($_SESSION['username'])) {
+    http_response_code(200);
+    $username = $_SESSION['username'];
+    echo $username;
+} else {
+    // Redirect the user to the login page if not logged in
+    http_response_code(401);
 }
-
-$username = $_GET['username'];
-
-$sql = "SELECT Kasutaja_ID FROM KASUTAJAD WHERE Nimi='$username'";
-$result = $conn->query($sql);
-
-if ($result === false) {
-    die("Query failed: " . $conn->error);
-}
-
-$results = mysqli_fetch_assoc($result);
-
-$response = array('sessionID' => $results);
-echo json_encode($response);
 ?>
