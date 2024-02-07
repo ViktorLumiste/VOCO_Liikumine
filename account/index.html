@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Account</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        h1, h2 {
+            color: #333;
+        }
+
+        .user-details {
+            margin-top: 20px;
+        }
+
+        .profile-picture {
+            max-width: 150px;
+            border-radius: 50%;
+        }
+
+        .settings {
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Your Account</h1>
+
+        <div class="user-details">
+            <h2>User Details</h2>
+            <p><strong>Username:</strong> YourUsername</p>
+            <p><strong>Email:</strong> your.email@example.com</p>
+            <!-- You can add more user details here -->
+        </div>
+
+        <div class="settings">
+            <h2>Account Settings</h2>
+            <form action="/update-profile" method="post" >
+                <div style="display:flex">
+                <div>
+                    <label for="newUsername">Change Username:</label><br>
+                    <label for="newPassword">Change Password:</label>
+                </div>
+                <div>
+                    <input type="text" id="newUsername" name="newUsername"><br>
+                    <input type="password" id="newPassword" name="newPassword">
+                </div>
+                </div>
+
+                <br>    
+
+                <input type="submit" value="Update Profile">
+            </form>
+        </div>
+    </div>
+</body>
+</html>
