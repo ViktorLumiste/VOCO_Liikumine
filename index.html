@@ -25,10 +25,10 @@
             </div>
             <button id="login-btn" class="login-btn" onclick="openLoginPopup()">Login</button>
             <div id="account-btn">
-                <button class="login-btn" onclick="togglelisakonto_btn()">Konto nimi<i id="accountArrow" class="fa-solid fa-arrow-right" style="transform: rotate(90deg); transition: opacity 0.3s ease" aria-hidden="true"></i></button>
-                <div id="additionalButtons" class="additionalButtonsDiv">
-                    <li class="additionalButtons"><a onclick="logoutUser()">Minu Konto</a></li>
-                    <li class="additionalButtons"><a onclick="logoutUser()">Logi Välja</a></li>
+                <button class="login-btn" onclick="togglelisakonto_btn()">Konto nimi<i id="accountArrow" class="fa-solid fa-arrow-right" style="transform: rotate(180deg); transition: opacity 0.3s ease" aria-hidden="true"></i></button>
+                <div id="additionalButtons" class="additionalButtonsDiv" style="display:none">
+                    <li class="additionalButtons"><a onclick="logoutUser()" href="account/">Minu Konto</a></li>
+                    <li class="additionalButtons"><a onclick="logoutUser()">Logi V채lja</a></li>
                 </div>
             </div>
         </div>
@@ -51,6 +51,67 @@
 
 <!-- Your page content goes here -->
 
+<div class="welcome">
+    <div class="info_container">
+        <h2 id="welcome_text"><strong>Liikumine. Tervis. Sport.</strong></h2>
+        <p><strong>Tutvu erinevate treeningute ja spordivõimalustega ning liigu VOCO rütmis</strong></p>
+        <button id="Loe_lisaks">Loe Lisaks</button>
+    </div>
+    <svg width="376" height="512" viewBox="0 0 376 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M269.808 166.54C275.026 148.219 283.896 131.142 295.885 116.337C307.874 101.531 322.733 89.3032 339.57 80.3878C356.408 71.4725 374.874 66.054 393.86 64.4584C412.845 62.8627 431.957 65.1229 450.046 71.1028C468.136 77.0828 484.828 86.6589 499.121 99.2554C513.413 111.852 525.01 127.209 533.214 144.402C541.418 161.595 546.059 180.27 546.858 199.303C547.658 218.336 544.599 237.334 537.866 255.155H455.68L491.575 317.386C474.855 330.206 455.479 339.124 434.865 343.485C414.251 347.847 392.923 347.542 372.442 342.594C351.961 337.645 332.847 328.177 316.501 314.885C300.154 301.592 286.989 284.811 277.969 265.772L335.212 166.54H269.808Z"
+              fill="#2AC1EF"/>
+        <path d="M168.536 221.515L148.146 256.85L0.000249113 0H296.306L200.239 166.542H136.82L168.536 221.515Z"
+              fill="#B41E8E"/>
+        <path d="M195.784 268.77L168.536 221.583L200.239 166.61H269.808C260.392 199.583 263.298 234.854 277.983 265.842L263.909 290.226C251.179 279.603 235.847 272.565 219.491 269.839C211.695 268.557 203.772 268.222 195.895 268.839"
+              fill="#EC4344"/>
+        <path d="M195.784 268.77L236.037 338.523L263.922 290.157C273.81 298.359 281.933 308.478 287.804 319.903C293.674 331.329 297.17 343.826 298.079 356.639C298.989 369.452 297.294 382.316 293.097 394.457C288.9 406.597 282.288 417.762 273.658 427.279C265.029 436.795 254.562 444.465 242.888 449.827C231.213 455.189 218.574 458.132 205.732 458.478C192.889 458.824 180.11 456.567 168.164 451.841C156.217 447.115 145.352 440.02 136.223 430.982L203.348 363.893L135.945 296.486C151.911 280.373 173.129 270.524 195.742 268.729"
+              fill="#15B59A"/>
+    </svg>
+
+</div>
+
+<div class="uudised">
+    <div class="uudised_container">
+        <h2 id="Terviseuudised">Terviseuudised</h2>
+        <a id="Kõik_uudised">KÕIK UUDISED<i class="fa-solid fa-arrow-right"></i></a>
+        <div class="uudised_info">
+            <div id="uudis1" class="uudis">
+                <img class="uudis_img" id="uudis_img1" alt="uudis_img" src="images/uudis1.png">
+                <p class="uudis_date" id="uudis_date1">03.11.2023</p>
+                <h3 class="uudis_title" id="uudis_title1">Uudis 1</h3>
+                <p class="uudis_text" id="uudis_text1">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
+                    vitae
+                    elit libero, a pharetra augue. Nullam id dolor id nibh ultricies vehicula ut id elit. Cras justo
+                    odio,
+                    dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Donec
+                    ullamcorper nulla non metus auctor fringilla. Nullam quis risus eget urna mollis ornare vel eu
+                    leo.</p>
+            </div>
+            <div id="uudis2" class="uudis">
+                <img class="uudis_img" id="uudis_img2" alt="uudis_img" src="images/uudis2.jpg">
+                <p class="uudis_date" id="uudis_date2">03.11.2023</p>
+                <h3 class="uudis_title" id="uudis_title2">Uudis 2</h3>
+                <p class="uudis_text" id="uudis_text2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
+                    vitae
+                    elit libero, a pharetra augue. Nullam id dolor id nibh ultricies vehicula ut id elit. Cras justo
+                    odio,
+                    dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Donec
+                    ullamcorper nulla non metus auctor fringilla. Nullam quis risus eget urna mollis ornare vel eu
+                    leo.</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div id="sportlikud_pakumised">
+    <div class="sportlikud_sontainer">
+        <h1 id="sportlikud_pakumised_text">Sportlikud Pakumised</h1>
+        <div class="pakkumised_container">
+            <h3 id="Spordibaasid">Spordibaasid</h3>
+        </div>
+    </div>
+</div>
 
 <!-- Your page content ends here -->
 
@@ -130,15 +191,6 @@
         document.getElementById("loginPopup").style.display = "none";
     }
 
-    function openRegistrationPopup() {
-        document.getElementById("registrationPopup").style.display = "flex";
-        document.getElementById("loginPopup").style.display = "none";
-    }
-
-    function closeRegistrationPopup() {
-        document.getElementById("registrationPopup").style.display = "none";
-    }
-
     function togglelisakonto_btn() {
         var additionalButtons = document.getElementById("additionalButtons");
         var accountArrow = document.getElementById("accountArrow");
@@ -152,39 +204,11 @@
     }
     function logoutUser(){
         localStorage.clear();
-        window.location.href = "https://lumisteviktor.ikt.khk.ee/liikumine_demo/";
+        window.location.href = "liikumine_demo/";
         console.log('All good')
 
     }
-    
-    function AddSessionID(username) {
-        var xhr = new XMLHttpRequest();
-    
-        var url = 'src/Kasutaja/session.php?username=' + encodeURIComponent(username);
-    
-        xhr.open('GET', url, true);
-    
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    // Parse the JSON response
-                    var jsonResponse = JSON.parse(xhr.responseText);
-    
-                    // Access the Kasutaja_ID property
-                    var kasutajaID = jsonResponse.sessionID.Kasutaja_ID;
-    
-                    // Log or use the extracted value
-                    console.log(kasutajaID);
-                    localStorage.setItem("sessionID", kasutajaID);
-                    
-                } else {
-                    console.error('Request failed with status:', xhr.status);
-                }
-            }
-        };
-    
-        xhr.send();
-    }
+
     function registerUser(e) {
         e.preventDefault();
         var regName = document.getElementById("regName").value;
@@ -231,7 +255,40 @@
         document.getElementById("registerMessage").innerHTML = "";
     }
 
+    function readCookie(cname) {
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0; i<ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0)==' ') c = c.substring(1);
+            if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+        }
+    }
 
+    function setUsername(){
+        // Make an AJAX request to your PHP script
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "src/Kasutaja/session.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    // Access the Kasutaja_ID property
+                    var Nimi = xhr.responseText;
+                    document.cookie = "username=" + Nimi;
+                } else {
+                    console.log('no username')
+                }
+
+            }
+        };
+        xhr.send();
+    }
+
+    function getUsername(){
+        name = readCookie('username')
+        document.getElementById('Loe_lisaks').innerHTML = name
+    }
 
     function loginUser(e) {
     e.preventDefault();
@@ -256,6 +313,8 @@
     };
 
     xhr.send("loginName=" + encodeURIComponent(username) + "&loginPassword=" + encodeURIComponent(password));
+    setUsername()
+    getUsername()
 }
     
 </script>
