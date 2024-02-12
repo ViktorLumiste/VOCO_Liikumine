@@ -15,15 +15,24 @@ if ($conn->connect_error) {
 }
 
 // Fetch schedule data from the database
-$query = "SELECT Trenni_Nimi as activityName, DATE_FORMAT(Algab, '%H:%i') AS start_time, DATE_FORMAT(Lopeb, '%H:%i') AS end_time, DAYNAME(Paev) AS weekday FROM TRENNID ORDER BY start_time";
+$query = "SELECT TRENNI_INFO.Tegevus as activityName, DATE_FORMAT(TRENNID.Algab, '%H:%i') AS start_time, DATE_FORMAT(TRENNID.Lopeb, '%H:%i') AS end_time, DAYNAME(TRENNID.Paev) AS weekday FROM TRENNID JOIN TRENNI_INFO ON TRENNID.Trenni_ID = TRENNI_INFO.Trenni_ID ORDER BY start_time";
 $result = $conn->query($query);
 
-// Prepare data for JSON response
-$data = [];
-while ($row = $result->fetch_assoc()) {
-    $data[] = $row;
-}
 
+// Initialize arrays for each weekday
+$weekdayArrays = array(
+    'Monday' => array(),
+    'Tuesday' => array(),
+    'Wednesday' => array(),
+    'Thursday' => array(),
+    'Friday' => array()
+);
+
+// Sort data into arrays based on weekday
+while ($row = $result->fetch_assoc()) {
+    $weekday = $row['weekday'];
+    $weekdayArrays[$weekday][] = $row;
+}
 // Close the connection
 $conn->close();
 
