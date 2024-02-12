@@ -12,19 +12,20 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-// Get username and password from the form
-$username = $_POST['loginName'];
+// Get email and password from the form
+$email = $_POST['loginEmail'];
 $password = $_POST['loginPassword'];
 
 // Perform a simple query to check user credentials
-$sql = "SELECT Parool FROM KASUTAJAD WHERE Nimi='$username'";
+$sql = "SELECT Parool,Nimi FROM KASUTAJAD WHERE Email='$email'";
 $result = $conn->query($sql);
 // Get the password from the db
 $results = mysqli_fetch_assoc($result);
 $resultstring = $results['Parool'];
 // Unhash the password
 $unhashed = password_verify($password, $resultstring);
-
+//Get the username from db
+$username = $results['Nimi'] ;
 // Check if the query was successful
 if ($unhashed) {
     // Start PHP session
@@ -32,6 +33,7 @@ if ($unhashed) {
 
     // Set session variables
     $_SESSION['username'] = $username;
+    $_SESSION['email'] = $email;
 
     // User authentication successful
     http_response_code(200); // OK
@@ -39,7 +41,7 @@ if ($unhashed) {
 } else {
     // User authentication failed
     http_response_code(401); // Unauthorized
-    echo "Login failed. Invalid username or password.";
+    echo "Login failed. Invalid email or password.";
 }
 
 // Close the database connection
