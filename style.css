@@ -119,6 +119,11 @@ li{
     margin-right: 100px; /* Added margin-right */
 }
 
+.login-btn i {
+    margin-left:4px;
+}
+
+
 .login-btn:hover {
     background-color: white; /* Change color as needed */
     color: black;
@@ -150,32 +155,77 @@ li{
 .login-popup {
     display: none;
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    align-items: center;
-    justify-content: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8); /* Adjust transparency */
     z-index: 1000;
-
 }
 
-.login-popup-content {
-    max-width: max-content;
+.login-popup-content, .registration-popup-content {
     background-color: #fff;
     padding: 20px;
     border-radius: 10px;
-    position: relative; /* Add this line */
+    position: relative;
+    max-width: 400px; /* Adjust as needed */
+    width: 80%; /* Adjust as needed */
+    text-align: center;
 }
 
 .close-popup {
     position: absolute;
-    top: 0;
+    top: 10px;
     right: 10px;
-    font-size: 30px;
+    font-size: 24px;
     cursor: pointer;
-    padding: 10px;
+    color: #fff;
+}
+
+.login-popup-content form, .registration-popup-content form {
+    margin-top: 20px;
+}
+
+.login-popup-content label, .registration-popup-content label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.login-popup-content input, .registration-popup-content input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.login-popup-content button, .registration-popup-content button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.login-popup-content button:hover, .registration-popup-content button:hover {
+    background-color: #0056b3;
+}
+
+.login-popup-content p, .registration-popup-content p {
+    margin-top: 15px;
+    color: #333;
+}
+
+.popup-link {
+    color: #007bff;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.popup-link:hover {
+    text-decoration: underline;
 }
 
 .additionalButtonsDiv {
@@ -191,6 +241,7 @@ li{
 }.additionalButtons a{
      color: black;
      font-size:15px;
+
  }
 .additionalButtons:hover{
     background: black;
@@ -278,56 +329,56 @@ li{
 
 /* Here comes liikumine.voco.ee body paart */
 .welcome {
-            background-image: linear-gradient(to right, rgba(0, 0, 0, 0.9) 5%, rgba(0, 0, 0, 0) 25%), url("../../Downloads/public_html/public_html/test/Viktor_liikumine_demo/images/welcome.jpg");
-            background-size: cover;
-            background-position: center;
-            height: 512px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.9) 5%, rgba(0, 0, 0, 0) 25%), url("images/welcome.jpg");
+    background-size: cover;
+    background-position: center;
+    height: 512px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
 
 
-        .info_container {
-            margin-right: 30%;
-            position: relative;
-            max-width: 60%;
-        }
+.info_container {
+    margin-right: 30%;
+    position: relative;
+    max-width: 60%;
+}
 
-        /* Existing styles */
+/* Existing styles */
 
 
-        #welcome_text {
-            font-size: 40px;
-            color: #fff;
-            margin-bottom: 20px;
-        }
+#welcome_text {
+    font-size: 40px;
+    color: #fff;
+    margin-bottom: 20px;
+}
 
-        p {
-            font-size: 20px;
-            color: #fff;
-            margin-bottom: 20px;
-        }
+p {
+    font-size: 20px;
+    color: #fff;
+    margin-bottom: 20px;
+}
 
-        #Loe_lisaks {
-            background-color: black;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            font-size: 20px;
-            cursor: pointer;
-            font-weight: 600;
-        }
+#Loe_lisaks {
+    background-color: black;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    font-weight: 600;
+}
 
-        /* Add styles for the SVG */
-        svg {
-            position: absolute;
-            top: 0;
-            right: 0;
-            height: 512px;
-            fill: #fff; /* Adjust color as needed */
-        }
+/* Add styles for the SVG */
+#welcome_svg {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 512px;
+    fill: #fff; /* Adjust color as needed */
+}
 
 .uudised {
     box-sizing: border-box;
@@ -351,20 +402,20 @@ li{
     color: #000;
     margin-bottom: 20px;
 }
-#Kõik_uudised {
-            position: absolute;
-            right: 0;
-            top: 25px;
-            background-color: transparent;
-            color: #000000;
-            padding: 10px 20px;
-            border: none;
-            font-size: 20px;
-            cursor: pointer;
-            font-weight: 600;
+#K천ik_uudised {
+    position: absolute;
+    right: 0;
+    top: 25px;
+    background-color: transparent;
+    color: #000000;
+    padding: 10px 20px;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    font-weight: 600;
 
-        }
-#Kõik_uudised i {
+}
+#K천ik_uudised i {
     margin-left: 10px;
 }
 
@@ -373,27 +424,27 @@ li{
     display: flex; /* Use flexbox for the children of uudised_info */
     justify-content: space-between; /* Add space between the children */
 }
-        .uudis {
-            width: calc(48% - 20px); /* Adjusted width to account for margins */
-            box-sizing: border-box;
-            margin-bottom: 20px;
-            margin-right: 20px; /* Add margin between items */
-            background-color: #ffffff;
-            transition: background-color 0.3s ease, color 0.3s ease;
-            cursor: pointer;
-        }
+.uudis {
+    width: calc(48% - 20px); /* Adjusted width to account for margins */
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    margin-right: 20px; /* Add margin between items */
+    background-color: #ffffff;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    cursor: pointer;
+}
 
-        .uudis:hover {
-            background-color: #fdfbfb;
-            color: #8e99ab; /* Text color for all child elements */
-        }
+.uudis:hover {
+    background-color: #fdfbfb;
+    color: #8e99ab; /* Text color for all child elements */
+}
 
-        .uudis:hover .uudis_date,
-        .uudis:hover .uudis_title,
-        .uudis:hover .uudis_text,
-        #K천ik_uudised:hover {
-            color: #8e99ab; /* Text color for specific child elements */
-        }
+.uudis:hover .uudis_date,
+.uudis:hover .uudis_title,
+.uudis:hover .uudis_text,
+#K천ik_uudised:hover {
+    color: #8e99ab; /* Text color for specific child elements */
+}
 .uudis_img {
     width: 100%;
     height: 300px;
@@ -423,51 +474,47 @@ li{
     margin-right: 40px;
 }
 
-        #sportlikud_pakumised {
-            background-color: #ffffff;
-            height: 30vh; /* Use vh (viewport height) for height */
-            margin-bottom: 12%;
-        }
+#sportlikud_pakumised {
+    background-color: #ffffff;
+    height: 40vh; /* Use vh (viewport height) for height */
+    margin-bottom: 12%;
+}
 
-        .sportlikud_sontainer {
-            position: relative;
-            margin-top: 7%;
-        }
+.sportlikud_sontainer {
+    position: relative;
+    margin-top: 7%;
+}
 
-        #sportlikud_pakumised_text {
-            font-size: 2vw;
-            color: #000;
-            margin-bottom: 2%;
-            margin-left: 5%;
-        }
+#sportlikud_pakumised_text {
+    font-size: 2vw;
+    color: #000;
+    margin-bottom: 2%;
+    margin-left: 5%;
+}
 
-        .pakkumised_container {
-            position: relative;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 100%),
-            url("../../Downloads/public_html/public_html/test/Viktor_liikumine_demo/images/spordibaasid.jpg") center/cover;
-            z-index: 1;            height: 40vh;
-            width: 40vw; /* Use vw for width */
-            max-width: 300px;
-            margin: 0 auto;
-            transition: background-color 0.3s ease, color 0.3s ease;
-            cursor: pointer;
-        }
-        .pakkumised_container:hover #Spordibaasid {
-            color: #8e99ab;
-        }
+.pakkumised_container {
+    position: relative;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 100%),
+    url("images/spordibaasid.jpg") center/cover;
+    z-index: 1;            height: 40vh;
+    width: 40vw; /* Use vw for width */
+    max-width: 300px;
+    margin: 0 auto;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    cursor: pointer;
+}
+.pakkumised_container:hover #Spordibaasid {
+    color: #8e99ab;
+}
 
-        /* Style for h1 and h3 on top of the image */
-        #Spordibaasid {
-            position: absolute;
-            color: #fff;
-            bottom: 5%;
-            left: 10%;
-            margin-right: 2%;
-        }
-
-
-
-
+/* Style for h1 and h3 on top of the image */
+#Spordibaasid {
+    position: absolute;
+    color: #fff;
+    bottom: 5%;
+    left: 10%;
+    margin-right: 2%;
+}
 
 
 
@@ -499,4 +546,103 @@ li{
     background-size: cover;
     background-position: center;
     margin: 0 5px;
+}
+
+
+.footer2 {
+    display: flex;
+    justify-content: center;
+    height: 220px;
+    background-color: black;
+}
+
+#footer2_container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#VOCO_svg {
+    margin-top: 20px;
+    margin-right: 130px;
+    fill: #fff;
+}
+
+#footer_info {
+    display: flex;
+    margin-right: 30px;
+    margin-left: 50px;
+    flex-wrap: nowrap;
+}
+
+.contact_info {
+    margin-right: 45px;
+    min-width: 150px;
+    flex-wrap: nowrap;
+}
+
+#footer_info h3,
+#footer_info p,
+#footer_info a {
+    color: #fff;
+    margin-bottom: 10px;
+    text-decoration: none;
+}
+
+#footer_info h3 {
+    margin-bottom: 20px;
+}
+
+/* Media Query for narrow windows */
+@media only screen and (max-width: 991px) {
+    #footer2_container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #VOCO_svg {
+        margin-right: 30px;
+    }
+
+    #footer_info {
+        margin: 0;
+        text-align: center;
+        align-items: center;
+    }
+
+    .contact_info {
+        margin-right: 0;
+        margin-left: 0; /* Center the contact info boxes */
+        margin-bottom: 15px;
+    }
+
+    #footer3_container p {
+        font-size: .75em;
+    }
+}
+
+
+.footer3 {
+    display: flex;
+    justify-content: center;
+    background-color: #ffffff;
+}
+
+
+#footer3_container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#footer3_container p {
+    background-color: #fff;
+    color: #000;
+    font-size: .875em;
+    font-weight: 600;
+    padding: 1.5rem 0;
+    text-align: center;
+    text-transform: uppercase;
+    width: 100%;
+
 }
