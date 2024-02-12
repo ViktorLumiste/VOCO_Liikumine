@@ -1,5 +1,4 @@
 <?php
-//          WIP!!!
 // Database credentials
 $servername = "localhost";
 $database = "lumisteviktor_VOCO_Liikumine";
