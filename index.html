@@ -125,8 +125,8 @@
 </footer>
 <footer class="footer2">
     <div id="footer2_container">
-        <!--<?xml version="1.0" encoding="UTF-8"?>-->
-        <!--<?xml version="1.0" encoding="UTF-8"?>-->
+        <?xml version="1.0" encoding="UTF-8"?>
+        <?xml version="1.0" encoding="UTF-8"?>
         <svg id="VOCO_svg" xmlns="http://www.w3.org/2000/svg" width="180" height="45" viewBox="0 0 180 45" fill="none">
             <path d="M90.7965 22.5C90.7965 26.9501 89.4689 31.3002 86.9816 35.0003C84.4942 38.7004 80.9589 41.5843 76.8226 43.2872C72.6863 44.9902 68.1347 45.4358 63.7436 44.5677C59.3525 43.6995 55.319 41.5565 52.1533 38.4099C48.9875 35.2632 46.8316 31.2541 45.9581 26.8895C45.0847 22.5249 45.5329 18.001 47.2462 13.8896C48.9595 9.7783 51.861 6.2643 55.5836 3.79197C59.3061 1.31965 63.6827 1.61439e-05 68.1599 1.61439e-05C74.1626 0.00275874 79.9187 2.37416 84.1633 6.59313C88.4079 10.8121 90.7937 16.5335 90.7965 22.5ZM180 22.5C180 18.0499 178.672 13.6998 176.185 9.9997C173.698 6.2996 170.162 3.41568 166.026 1.71271C161.89 0.00974169 157.338 -0.435823 152.947 0.432343C148.556 1.30051 144.523 3.44342 141.357 6.5901C138.191 9.73678 136.035 13.7459 135.162 18.1105C134.288 22.4751 134.736 26.9991 136.45 31.1104C138.163 35.2217 141.064 38.7357 144.787 41.208C148.51 43.6804 152.886 45 157.363 45C163.367 45 169.125 42.6294 173.37 38.4099C177.615 34.1903 180 28.4673 180 22.5ZM117.963 22.5621L133.998 6.62377C130.838 3.47023 126.809 1.31877 122.42 0.441503C118.03 -0.435768 113.477 0.000548532 109.337 1.69528C105.197 3.39 101.656 6.267 99.1608 9.96243C96.6658 13.6579 95.3295 18.0057 95.3208 22.4561C95.3121 26.9064 96.6313 31.2594 99.1117 34.9645C101.592 38.6696 105.122 41.5604 109.256 43.2711C113.389 44.9819 117.94 45.4359 122.333 44.5756C126.726 43.7154 130.764 41.5796 133.935 38.4383L117.963 22.5621ZM0 2.25622L23.7299 43.1577L47.4703 2.25622H0Z"
                   fill="white"></path>
@@ -271,6 +271,8 @@
                 if (xhr.status === 200) {
                     // Login successful
                     console.log("Logout Successful!")
+                    loginButtonDisplay()
+
                 } else {
                     // Login failed
                     console.log( "Logout failed.");
@@ -292,7 +294,7 @@
     function logoutUser(){
         localStorage.clear();
         deleteAllCookies()
-        console.log(name)
+        logOut()
         window.location.href = "./";
         console.log('All good')
 
@@ -359,7 +361,12 @@
             if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
         }
     }
-    function setCookie(cookie_name){
+    function setText(value, id){
+        cookie = readCookie(value)
+        console.log(cookie)
+        document.getElementById(id).innerHTML = cookie
+    }
+    async function setCookie(cookie_name){
         // Make an AJAX request to your PHP script
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "src/Kasutaja/session.php", true);
@@ -370,8 +377,6 @@
                     // Access the Kasutaja_ID property
                     var value = xhr.responseText;
                     document.cookie = cookie_name + "=" + value;
-                    // Call getCookie after setting the cookie
-                    getCookie(cookie_name);
                 } else {
                     console.log('no cookie_name')
                 }
@@ -380,10 +385,7 @@
         };
         xhr.send("cname=" + encodeURIComponent(cookie_name));
     }
-    async function getCookie(cookie_name){
-        name = await readCookie(cookie_name)
-        document.getElementById('konto_nimi').innerHTML = name
-    }
+
 
     async function loginUser(e) {
         e.preventDefault();
@@ -399,6 +401,11 @@
                 if (xhr.status === 200) {
                     // Login successful
                     console.log("Success!")
+                    accountButtonDisplay()
+                    closeLoginPopup()
+                    setCookie("email")
+                    setCookie("username")
+                    setText("username","konto_nimi")
                 } else {
                     // Login failed
                     console.log("Login failed. Invalid email or password.");
