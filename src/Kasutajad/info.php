@@ -1,18 +1,7 @@
 <?php
-
 // Database credentials
-$servername = "localhost";
-$database = "lumisteviktor_VOCO_Liikumine";
-$username = "lumisteviktor";
-$password = "2$9?,bzk+VN0";
-
-
-// Create connection for reading data
-$conn = mysqli_connect($servername, $username, $password, $database);
-// Check if the connection failed
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+require '../Database.php';
+global $conn;
 
 // Wait until the user sends a post request
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

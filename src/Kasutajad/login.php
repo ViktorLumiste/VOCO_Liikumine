@@ -1,17 +1,9 @@
 <?php
 
 // Database credentials
-$servername = "localhost";
-$database = "lumisteviktor_VOCO_Liikumine";
-$username = "lumisteviktor";
-$password = "2$9?,bzk+VN0";
+require '../Database.php';
+global $conn;
 
-// Create connection for reading data
-$conn = mysqli_connect($servername, $username, $password, $database);
-// Check if the connection failed
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
 // Get email and password from the form
 $email = $_POST['loginEmail'];
 $password = $_POST['loginPassword'];

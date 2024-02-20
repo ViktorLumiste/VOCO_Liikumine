@@ -1,18 +1,9 @@
 <?php
 
 // Database credentials
-$servername = "localhost";
-$database = "lumisteviktor_VOCO_Liikumine";
-$username = "lumisteviktor";
-$password = "2$9?,bzk+VN0";
+require '../Database.php';
+global $conn;
 
-
-// Create connection for reading data
-$conn = mysqli_connect($servername, $username, $password, $database);
-// Check if the connection failed
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
     //Find all users who have a coach role
     $sql1 = "SELECT Kasutaja_ID, Nimi FROM KASUTAJAD where roll='t'";
     $result1 = $conn->query($sql1);

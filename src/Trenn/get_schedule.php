@@ -1,17 +1,7 @@
 <?php
 // Database credentials
-$servername = "localhost";
-$database = "lumisteviktor_VOCO_Liikumine";
-$username = "lumisteviktor";
-$password = "2$9?,bzk+VN0";
-
-
-// Create connection for reading data
-$conn = mysqli_connect($servername, $username, $password, $database);
-// Check if the connection failed
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+require '../Database.php';
+global $conn;
 
 // Fetch schedule data from the database
 $query = "SELECT TRENNI_INFO.Tegevus as activityName, DATE_FORMAT(TRENNID.Algab, '%H:%i') AS start_time, DATE_FORMAT(TRENNID.Lopeb, '%H:%i') AS end_time, DAYNAME(TRENNID.Paev) AS weekday FROM TRENNID JOIN TRENNI_INFO ON TRENNID.Trenni_ID = TRENNI_INFO.Trenni_ID ORDER BY start_time";
