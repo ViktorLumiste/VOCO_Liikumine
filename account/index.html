@@ -1,9 +1,22 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Account</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="../jquery.js"></script>
+    <script>
+
+        $(function(){
+            $("#includeFooter").load("../components/footers.html")
+
+        })
+
+    </script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -34,20 +47,27 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Your Account</h1>
 
-        <div class="user-details">
-            <h2>User Details</h2>
-            <p><strong>Username:</strong> YourUsername</p>
-            <p><strong>Email:</strong> your.email@example.com</p>
-            <!-- You can add more user details here -->
-        </div>
+<div id="includeNavBar"></div>
 
-        <div class="settings">
-            <h2>Account Settings</h2>
-            <form action="/update-profile" method="post" >
-                <div style="display:flex">
+<!-- Your page content goes here -->
+<div class="container">
+    <h1>Your Account</h1>
+
+    <div class="user-details">
+        <h2>User Details</h2>
+        <img id="ProfilePicture" src="../src/KasutajaPildid/images.png"><br>
+        <input type="file" id="pfpInput" accept="image/*"><br>
+        <button onclick="uploadImage()">Kasuta Pilt</button>
+        <p id="konto_nimi"><strong>Username:</strong> YourUsername</p>
+        <p id="konto_email"><strong>Email:</strong> your.email@example.com</p>
+        <!-- You can add more user details here -->
+    </div>
+
+    <div class="settings">
+        <h2>Account Settings</h2>
+        <form onSubmit="editData(event)">
+            <div style="display:flex">
                 <div>
                     <label for="newUsername">Change Username:</label><br>
                     <label for="newPassword">Change Password:</label>
@@ -56,13 +76,126 @@
                     <input type="text" id="newUsername" name="newUsername"><br>
                     <input type="password" id="newPassword" name="newPassword">
                 </div>
-                </div>
+            </div>
 
-                <br>    
+            <br>
 
-                <input type="submit" value="Update Profile">
-            </form>
-        </div>
+            <input type="submit" value="Update Profile">
+        </form>
     </div>
+</div>
+<!-- Your page content ends here -->
+
+
+
+<div id="includeFooter"></div>
+
+<script src="https://kit.fontawesome.com/9616f6d837.js" crossorigin="anonymous"></script>
+<script>
+
+    async function setData(){
+        var username = await readCookie('username')
+        var email = await readCookie('email')
+        var pfp = await readCookie('pfp')
+        document.getElementById('konto_nimi').innerHTML = "<strong>Username:</strong>"+ username
+        document.getElementById('konto_email').innerHTML = "<strong>Email:</strong>"+ email
+        if (pfp){
+            document.getElementById('ProfilePicture').src= "../src/KasutajaPildid/"+ pfp
+        }
+    }
+
+    async function editData(e){
+        e.preventDefault();
+        var newUsername = document.getElementById("newUsername").value;
+        var newPassword = document.getElementById("newPassword").value;
+        var email = await readCookie('email')
+        // Make an AJAX request to your PHP script
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "../src/Kasutaja/edit.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    // Access the Kasutaja_ID property
+                    console.log(xhr.responseText)
+                } else {
+                    console.log('not good')
+                }
+
+            }
+        };
+        xhr.send("username=" + encodeURIComponent(newUsername) + "&password=" + encodeURIComponent(newPassword)+ "&email=" +encodeURIComponent(email));
+    }
+    async function uploadImage(){
+        var email = await readCookie('email')
+        var pfp = await readCookie('pfp')
+        var input = document.getElementById('pfpInput');
+        var file = input.files[0];
+
+        if (file) {
+            // Define maximum file size in bytes
+            var maxSize = 5 * 1024 * 1024; // 5MB
+
+            if (file.size > maxSize) {
+                console.error('File size exceeds the maximum limit.');
+                return;
+            }
+
+            var formData = new FormData();
+            formData.append('image', file);
+            formData.append('email', email);
+            formData.append('oldFile', pfp);
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '../src/Kasutaja/pfp.php', true);
+
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    document.cookie="pfp="+(xhr.responseText);
+                    console.log(xhr.responseText)
+                    location. reload(true);
+                } else {
+                    console.error('Image upload failed. Status:', xhr.status);
+                }
+            };
+
+            xhr.send(formData);
+        } else {
+            console.error('No file selected.');
+        }
+
+    }
+    $(document).ready(function() {
+        $("#includeNavBar").load("../components/navbar.html", function () {
+            // Callback function - this runs after the content is loaded
+            checkLogStatus();
+        });
+        async function checkLogStatus() {
+            try {
+                logStatus = await readCookie("loggedIn");
+                console.log('Read cookie result:', logStatus);
+
+                if (!logStatus) {
+                    localStorage.clear();
+                    deleteAllCookies();
+                    loginButtonDisplay()
+                } else {
+                    accountButtonDisplay()
+                    setCookie('username')
+                    setData()
+                }
+            } catch (error) {
+                console.error('Error in checkLogStatus:', error);
+            }
+        }
+
+        function accountButtonDisplay() {
+            document.getElementById("account-btn").style.display = "block";
+            document.getElementById("login-btn").style.display = "none";
+        }
+    });
+
+</script>
 </body>
 </html>
+

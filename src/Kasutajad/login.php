@@ -9,15 +9,15 @@ $email = $_POST['loginEmail'];
 $password = $_POST['loginPassword'];
 
 // Perform a simple query to check user credentials
-$sql = "SELECT Parool,Nimi FROM KASUTAJAD WHERE Email='$email'";
+$sql = "SELECT Parool,Nimi,Pilt FROM KASUTAJAD WHERE Email='$email'";
 $result = $conn->query($sql);
 // Get the password from the db
 $results = mysqli_fetch_assoc($result);
 $resultstring = $results['Parool'];
 // Unhash the password
 $unhashed = password_verify($password, $resultstring);
-//Get the username from db
 $username = $results['Nimi'] ;
+$pfp = $results['Pilt'] ;
 // Check if the query was successful
 if ($unhashed) {
     // Start PHP session
@@ -26,6 +26,7 @@ if ($unhashed) {
     // Set session variables
     $_SESSION['username'] = $username;
     $_SESSION['email'] = $email;
+    $_SESSION['pfp']= $pfp;
 
     // User authentication successful
     http_response_code(200); // OK
