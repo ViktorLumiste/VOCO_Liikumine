@@ -6,49 +6,21 @@
     <title>Voco Liikumine</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <script src="jquery.js"></script>
+    <script>
+        $(function(){
+            $("#includeNavBar").load("indexComponents/navbar.html")
+            $("#includeFooter").load("indexComponents/footers.html")
 
+        })
+    </script>
 </head>
 <body>
 
-<!-- Container for the navbars -->
-<div class="navbars-container">
-    <!-- First Navbar -->
-    <nav class="first-nav">
-        <div class="social-icons">
-            <i class="fab fa-facebook"></i>
-            <i class="fab fa-tiktok"></i>
-            <i class="fab fa-instagram"></i>
-        </div>
-        <div class="search-login-icons">
-            <div>
-                <input class="search-bar" type="text" placeholder="Otsi...">
-            </div>
-            <button id="login-btn" class="login-btn" onclick="openLoginPopup()" >Login</button>
-            <div id="account-btn" style="display: none;">
-                <button class="login-btn" onclick="togglelisakonto_btn()"><t id="konto_nimi">Konto nimi</t><i id="accountArrow" class="fa-solid fa-arrow-right" style="transform: rotate(180deg); transition: opacity 0.3s ease" aria-hidden="true"></i></button>
-                <div id="additionalButtons" class="additionalButtonsDiv" style="display:none">
-                    <li class="additionalButtons"><a onclick="navigateToAccountPage()">Minu Konto</a></li>
-
-                    <li class="additionalButtons"><a onclick="logoutUser()">Logi Välja</a></li>
-                </div>
-            </div>
-        </div>
-
-    </nav>
-    <!-- Second Navbar -->
-    <nav class="second-nav">
-        <a href="#" class="logo"><img src="images/logo.png" alt="Your Logo"></a>
-        <div>
-            <a href="artiklid">Artiklid</a>
-            <a href="uudised">Uudised</a>
-            <a href="trennid">Trennid</a>
-            <a href="galerii">Galerii</a>
-            <a href="kontakt">Kontakt</a>
-        </div>
-    </nav>
-
-    <!-- Second Navbar -->
-</div>
+<div id="includeNavBar"></div>
 
 <!-- Your page content goes here -->
 <div class="welcome">
@@ -115,242 +87,13 @@
 
 <!-- Your page content ends here -->
 
-<footer class="footer">
-    <div class="mapBanner">
-        <a href="https://www.google.com/maps?ll=58.349455,26.714113&amp;z=15&amp;t=m&amp;hl=en-US&amp;gl=EG&amp;mapclient=embed&amp;q=Kopli+1+50115+Tartu+Estonia"
-           target="_blank" class="mapBanner_col" style="background-image: url('images/kopli1a.jpg')">Kopli 1</a>
-        <a href="https://www.google.com/maps/place/Põllu+11,+50303+Tartu,+Estonia/@58.3994611,26.7119631,17.25z/data=!4m13!1m7!3m6!1s0x46eb36f49f59f7b1:0xc60a936ef314737f!2sPõllu+11,+50303+Tartu,+Estonia"
-           target="_blank" class="mapBanner_col" style="background-image: url('images/põllu11.jpg')">Põllu 11</a>
-    </div>
-</footer>
-<footer class="footer2">
-    <div id="footer2_container">
-        <?xml version="1.0" encoding="UTF-8"?>
-        <?xml version="1.0" encoding="UTF-8"?>
-        <svg id="VOCO_svg" xmlns="http://www.w3.org/2000/svg" width="180" height="45" viewBox="0 0 180 45" fill="none">
-            <path d="M90.7965 22.5C90.7965 26.9501 89.4689 31.3002 86.9816 35.0003C84.4942 38.7004 80.9589 41.5843 76.8226 43.2872C72.6863 44.9902 68.1347 45.4358 63.7436 44.5677C59.3525 43.6995 55.319 41.5565 52.1533 38.4099C48.9875 35.2632 46.8316 31.2541 45.9581 26.8895C45.0847 22.5249 45.5329 18.001 47.2462 13.8896C48.9595 9.7783 51.861 6.2643 55.5836 3.79197C59.3061 1.31965 63.6827 1.61439e-05 68.1599 1.61439e-05C74.1626 0.00275874 79.9187 2.37416 84.1633 6.59313C88.4079 10.8121 90.7937 16.5335 90.7965 22.5ZM180 22.5C180 18.0499 178.672 13.6998 176.185 9.9997C173.698 6.2996 170.162 3.41568 166.026 1.71271C161.89 0.00974169 157.338 -0.435823 152.947 0.432343C148.556 1.30051 144.523 3.44342 141.357 6.5901C138.191 9.73678 136.035 13.7459 135.162 18.1105C134.288 22.4751 134.736 26.9991 136.45 31.1104C138.163 35.2217 141.064 38.7357 144.787 41.208C148.51 43.6804 152.886 45 157.363 45C163.367 45 169.125 42.6294 173.37 38.4099C177.615 34.1903 180 28.4673 180 22.5ZM117.963 22.5621L133.998 6.62377C130.838 3.47023 126.809 1.31877 122.42 0.441503C118.03 -0.435768 113.477 0.000548532 109.337 1.69528C105.197 3.39 101.656 6.267 99.1608 9.96243C96.6658 13.6579 95.3295 18.0057 95.3208 22.4561C95.3121 26.9064 96.6313 31.2594 99.1117 34.9645C101.592 38.6696 105.122 41.5604 109.256 43.2711C113.389 44.9819 117.94 45.4359 122.333 44.5756C126.726 43.7154 130.764 41.5796 133.935 38.4383L117.963 22.5621ZM0 2.25622L23.7299 43.1577L47.4703 2.25622H0Z"
-                  fill="white"></path>
-        </svg>
-        <div id="footer_info">
-            <div id="Kontakt_info" class="contact_info">
-                <h3>Kontakt</h3>
-                <p><a href="mailto:info@voco.ee">info@voco.ee</a></p>
-                <p>7 361 810</p>
-            </div>
-            <div id="VOCO_info" class="contact_info">
-                <h3>VOCO</h3>
-                <p>Kopli 1</p>
-                <p>Tartu 50115 Eesti</p>
-            </div>
-            <div id="Privacy_info" class="contact_info">
-                <h3>Privaatsuspoliitika</h3>
-                <p><a href="#">Andmekaitse</a></p>
-                <p><a href="#">Küpsised</a></p>
-            </div>
-        </div>
-    </div>
-</footer>
-<footer class="footer3">
-    <div id="footer3_container">
-        <p>
-            © Tartu rakenduslik kolledž 2024
-        </p>
-    </div>
-</footer>
-<!-- Login Pop-up Box -->
-<div class="login-popup" id="loginPopup">
-    <div class="login-popup-content">
-        <span class="close-popup" onclick="closeLoginPopup()">&times;</span>
 
-        <!-- Your login form goes here -->
-        <form id="loginForm" onSubmit="loginUser(event)">
-            <!-- Add your login form fields here -->
-            <label for="loginEmail">Email:</label><br>
-            <input type="text" id="loginEmail" name="loginEmail"><br>
 
-            <label for="loginPassword">Password:</label><br>
-            <input type="password" id="loginPassword" name="loginPassword"><br>
+<div id="includeFooter"></div>
 
-            <a href="#" style="color: blue;">Forgot your password?</a><br>
-            <button type="submit">Login</button>
-            <br>
-            <p id="loginMessage"></p>
-            <br>
 
-            <p style="text-align: center; margin-top: 10px;">Need an account? <a href="#" style="color: blue" onclick="openRegistrationPopup()" ;>Sign
-                up</a></p>
-        </form>
-    </div>
-</div>
-<div class="login-popup" id="registrationPopup">
-    <div class="login-popup-content">
-        <span class="close-popup" onclick="closeRegistrationPopup()">&times;</span>
-
-        <!-- Your registration form goes here -->
-        <form id="registerForm" onSubmit="registerUser(event)">
-            <!-- Add your registration form fields here -->
-            <label for="regName">Nimi:</label><br>
-            <input type="text" id="regName" name="regName"><br>
-
-            <label for="regEmail">Email:</label><br>
-            <input type="email" id="regEmail" name="regEmail"><br>
-
-            <label for="regPassword">Parool:</label><br>
-            <input type="password" id="regPassword" name="regPassword"><br>
-
-            <label for="regPhone">Telefon:</label><br>
-            <input type="tel" id="regPhone" name="regPhone" pattern="[0-9+]+"><br>
-
-            <button type="submit">Register</button>
-            <br>
-            <p id="registerMessage"></p>
-            <br>
-            <p style="text-align: center; margin-top: 10px;">Already have an account? <a href="#"
-                                                                                         onclick="openLoginPopup()"
-                                                                                         style="color: blue;">Login</a>
-            </p>
-        </form>
-    </div>
-</div>
-<a id="menutogglebtn" class="togglebtn" href="#">&#x2261;</a>
 <script src="https://kit.fontawesome.com/9616f6d837.js" crossorigin="anonymous"></script>
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const toggleBtn = document.querySelector(".togglebtn");
-        const secondNav = document.querySelector(".second-nav");
-
-        toggleBtn.addEventListener("click", function () {
-            secondNav.classList.toggle("open");
-        });
-    });
-    //Login form popup hide and show
-    function openLoginPopup() {
-        document.getElementById("loginPopup").style.display = "flex";
-        document.getElementById("registrationPopup").style.display = "none"
-    }
-
-    function closeLoginPopup() {
-        document.getElementById("loginPopup").style.display = "none";
-    }
-    //Reg form popup hide and show
-    function openRegistrationPopup() {
-        document.getElementById("registrationPopup").style.display = "flex";
-        document.getElementById("loginPopup").style.display = "none";
-    }
-
-    function closeRegistrationPopup() {
-        document.getElementById("registrationPopup").style.display = "none";
-    }
-    //Konto button
-    function togglelisakonto_btn() {
-        var additionalButtons = document.getElementById("additionalButtons");
-        var accountArrow = document.getElementById("accountArrow");
-        if (additionalButtons.style.display === "none") {
-            additionalButtons.style.display = "block";
-            accountArrow.style.transform = "rotate(90deg)";
-        } else {
-            additionalButtons.style.display = "none";
-            accountArrow.style.transform = "rotate(180deg)";
-        }
-    }
-    //Login button ja account button display switch
-    function loginButtonDisplay(){
-        document.getElementById("login-btn").style.display = "block";
-        document.getElementById("account-btn").style.display = "none";
-    }
-    function accountButtonDisplay(){
-        document.getElementById("account-btn").style.display = "block";
-        document.getElementById("login-btn").style.display = "none";
-    }
-    function logOut(){
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "src/Kasutaja/logout.php", true);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    // Login successful
-                    console.log("Logout Successful!")
-                    loginButtonDisplay()
-
-                } else {
-                    // Login failed
-                    console.log( "Logout failed.");
-                }
-            }
-        };
-        xhr.send();
-    }
-    function deleteAllCookies() {
-        const cookies = document.cookie.split(";");
-
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i];
-            const eqPos = cookie.indexOf("=");
-            const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-            document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
-        }
-    }
-    function logoutUser(){
-        localStorage.clear();
-        deleteAllCookies()
-        logOut()
-        window.location.href = "./";
-        console.log('All good')
-
-    }
-
-    function navigateToAccountPage() {
-        window.location.href = 'account'
-    }
-
-
-
-    function registerUser(e) {
-        e.preventDefault();
-        var regName = document.getElementById("regName").value;
-        var regEmail = document.getElementById("regEmail").value;
-        var regPassword = document.getElementById("regPassword").value;
-        var regPhone = document.getElementById("regPhone").value;
-
-        // Make an AJAX request to your PHP registration script
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "src/Kasutaja/register.php", true);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    // Registration successful
-                    // Optionally, you can handle the response from the server
-                    document.getElementById("registerMessage").innerHTML = "Registration successful!";
-                } else {
-                    // Registration failed
-                    // Optionally, you can handle the response from the server
-                    document.getElementById("registerMessage").innerHTML = "Registration failed. Please try again.";
-                }
-            }
-        };
-
-        xhr.send("regName=" + encodeURIComponent(regName) +
-            "&regEmail=" + encodeURIComponent(regEmail) +
-            "&regPassword=" + encodeURIComponent(regPassword) +
-            "&regPhone=" + encodeURIComponent(regPhone));
-    }
-
-    function openRegistrationPopup() {
-        document.getElementById("registrationPopup").style.display = "flex";
-        document.getElementById("loginPopup").style.display = "none";
-    }
-
-    function closeRegistrationPopup() {
-        document.getElementById("registrationPopup").style.display = "none";
-        // Optionally, you can reset the registration form fields here
-        document.getElementById("regName").value = "";
-        document.getElementById("regEmail").value = "";
-        document.getElementById("regPassword").value = "";
-        document.getElementById("regPhone").value = "";
-        document.getElementById("registerMessage").innerHTML = "";
-    }
 
     function readCookie(cname) {
         var name = cname + "=";
@@ -361,64 +104,34 @@
             if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
         }
     }
-    function setText(value, id){
-        cookie = readCookie(value)
-        console.log(cookie)
-        document.getElementById(id).innerHTML = cookie
-    }
-    async function setCookie(cookie_name){
-        // Make an AJAX request to your PHP script
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "src/Kasutaja/session.php", true);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    // Access the Kasutaja_ID property
-                    var value = xhr.responseText;
-                    document.cookie = cookie_name + "=" + value;
+    $(document).ready(function() {
+        $("#includeNavBar").load("indexComponents/navbar.html", function () {
+            // Callback function - this runs after the content is loaded
+            checkLogStatus();
+        });
+        async function checkLogStatus() {
+            try {
+                logStatus = await readCookie("loggedIn");
+                console.log('Read cookie result:', logStatus);
+
+                if (!logStatus) {
+                    localStorage.clear();
+                    deleteAllCookies();
+                    loginButtonDisplay()
                 } else {
-                    console.log('no cookie_name')
-                }
-
-            }
-        };
-        xhr.send("cname=" + encodeURIComponent(cookie_name));
-    }
-
-
-    async function loginUser(e) {
-        e.preventDefault();
-        var email = document.getElementById("loginEmail").value;
-        var password = document.getElementById("loginPassword").value;
-
-        // Make an AJAX request to your PHP script
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "src/Kasutaja/login.php", true);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    // Login successful
-                    console.log("Success!")
                     accountButtonDisplay()
-                    closeLoginPopup()
-                    setCookie("email")
-                    setCookie("username")
-                    setText("username","konto_nimi")
-                } else {
-                    // Login failed
-                    console.log("Login failed. Invalid email or password.");
+                    setCookie('username')
                 }
+            } catch (error) {
+                console.error('Error in checkLogStatus:', error);
             }
-        };
+        }
 
-
-
-        xhr.send("loginEmail=" + encodeURIComponent(email) + "&loginPassword=" + encodeURIComponent(password));
-    }
-
-
+        function accountButtonDisplay() {
+            document.getElementById("account-btn").style.display = "block";
+            document.getElementById("login-btn").style.display = "none";
+        }
+    });
 </script>
 </body>
 </html>
