@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>Voco Liikumine</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Montserrat, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+        }
+        li{
+            list-style-type: none
+        }
+
+        /* Container for the navbars */
+        .navbars-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* First Navbar */
+        .second-nav {
+            background-color: #000;
+            color: #fff;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .second-nav .logo {
+            color: #fff;
+            text-decoration: none;
+            font-size: 24px;
+            margin-left: 100px;
+        }
+
+        .second-nav .logo img {
+            width: 100%;
+            max-width: 200px;
+        }
+
+        .second-nav .logo:hover img {
+            filter: invert(1);
+        }
+
+        .second-nav div {
+            display: flex;
+            margin-right: 100px;
+        }
+
+        .second-nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 18px;
+            position: relative;
+            transition: color 0.3s ease;
+            border-radius: 10px;
+            padding: 5px 10px;
+        }
+
+        .second-nav a::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            border-radius: 10px;
+            background-color: transparent;
+            z-index: -1;
+            transition: background-color 0.3s ease;
+        }
+
+        .second-nav a:hover {
+            color: #000;
+            background: white;
+        }
+
+        .second-nav a:hover::before {
+            background-color: #fff;
+        }
+
+        /* first-nav */
+        .first-nav {
+            background-color: #f5f7fa; /* Change to white */
+            color: black; /* Change text color as needed */
+            padding: 10px 20px; /* Added padding to the sides */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .first-nav a {
+            color: #333; /* Change text color as needed */
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 18px;
+        }
+
+        /* New styles for search bar, login button, and icons */
+        .search-login-icons {
+            display: flex;
+            align-items: center;
+        }
+
+        .search-bar {
+            margin-right: 15px;
+            width: 250px; /* Adjust the width as needed */
+            background-color: white;
+            outline: none;
+            padding: 8px; /* Add padding */
+            border-radius: 5px;
+        }
+
+        .login-btn {
+            background-color: black; /* Change color as needed */
+            color: #fff;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 100px; /* Added margin-right */
+        }
+
+        .login-btn i {
+            margin-left:4px;
+        }
+
+
+        .login-btn:hover {
+            background-color: white; /* Change color as needed */
+            color: black;
+        }
+
+
+        .social-icons {
+            display: flex;
+            align-items: center;
+            margin-left: 100px; /* Added margin-left */
+        }
+
+        .social-icons i {
+            font-size: 24px;
+            margin-right: 10px;
+            color: black; /* Change icon color as needed */
+            padding: 5px;
+            border-radius: 10px;
+        }
+
+        .social-icons i:hover {
+            color: WHITE; /* Change icon color as needed */
+            background: black;
+
+        }
+
+        /* Login popup */
+
+        .login-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8); /* Adjust transparency */
+            z-index: 1000;
+        }
+
+        .login-popup-content, .registration-popup-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            position: relative;
+            max-width: 400px; /* Adjust as needed */
+            width: 80%; /* Adjust as needed */
+            text-align: center;
+        }
+
+        .close-popup {
+            background-color: black;
+            border-radius:2px;
+            position: absolute;
+            margin:2px;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #fff;
+        }
+
+        .login-popup-content form, .registration-popup-content form {
+            margin-top: 20px;
+        }
+
+        .login-popup-content label, .registration-popup-content label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .login-popup-content input, .registration-popup-content input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .login-popup-content button, .registration-popup-content button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .login-popup-content button:hover, .registration-popup-content button:hover {
+            background-color: #0056b3;
+        }
+
+        .login-popup-content p, .registration-popup-content p {
+            margin-top: 15px;
+            color: #333;
+        }
+
+        .popup-link {
+            color: #007bff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .popup-link:hover {
+            text-decoration: underline;
+        }
+
+        .additionalButtonsDiv {
+            position: absolute;
+            border: 1px solid #ccc;
+
+            z-index: 999; /* Ensure it's on top */
+            display: none; /* Initially hidden */
+        }
+        .additionalButtons {
+            background: white;
+            padding: 5px;
+        }.additionalButtons a{
+             color: black;
+             font-size:15px;
+
+         }
+        .additionalButtons:hover{
+            background: black;
+            padding: 5px;
+            cursor: pointer;
+        }
+        .additionalButtons:hover a{
+            color: WHITE; /* Change icon color as needed */
+        }
+
+        @media only screen and (max-width: 990px) {
+            .second-nav {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .second-nav .logo {
+                margin-bottom: 10px;
+                left: -20px;
+            }
+
+            .second-nav .logo,
+            .second-nav .togglebtn {
+                margin-bottom: 10px; /* Add margin to both logo and togglebtn */
+            }
+
+            .second-nav div {
+                margin-top: 10px;
+                margin-right: 0;
+                width: max-content;
+                display: none;
+                flex-direction: column;
+            }
+
+            .second-nav a {
+                margin: 5px 0;
+                font-size: 16px;
+            }
+
+            .social-icons,
+            .search-bar,
+            .login-btn {
+                display: none;
+            }
+
+            .togglebtn {
+                position: fixed;
+                top: 40px;
+                right: 10px;
+                padding: 5px 10px 10px 10px;
+                z-index: 999; /* Set a high z-index to make sure it appears on top of other items */
+                font-size: 24px;
+                color: white;
+                text-decoration: none;
+                border-radius: 10px;
+            }
+
+            .togglebtn:hover {
+                color: black;
+                background: white;
+            }
+        }
+
+        @media only screen and (min-width: 991px) {
+            .second-nav .togglebtn {
+                display: none;
+            }
+
+            .second-nav div {
+                display: flex;
+            }
+
+            .social-icons,
+            .search-bar,
+            .login-btn {
+                display: flex;
+            }
+
+            .togglebtn {
+                display: none;
+            }
+        }
+
+
+
+    </style>
+</head>
+
+<body>
+
+<!-- Container for the navbars -->
+<div class="navbars-container">
+    <!-- First Navbar -->
+    <nav class="first-nav">
+        <div class="social-icons">
+            <i class="fab fa-facebook"></i>
+            <i class="fab fa-tiktok"></i>
+            <i class="fab fa-instagram"></i>
+        </div>
+        <div class="search-login-icons">
+            <div>
+                <input class="search-bar" type="text" placeholder="Otsi...">
+            </div>
+            <button id="login-btn" class="login-btn" onclick="openLoginPopup()" >Login</button>
+
+
+
+            <div id="account-btn" style="display: none;">
+                <button class="login-btn" onclick="togglelisakonto_btn()"><t id="nimi">Konto nimi</t><i id="accountArrow" class="fa-solid fa-arrow-right" style="transform: rotate(180deg); transition: opacity 0.3s ease" aria-hidden="true"></i></button>
+                <div id="additionalButtons" class="additionalButtonsDiv" style="display:none">
+                    <li class="additionalButtons"><a onclick="navigateToAccountPage()">Minu Konto</a></li>
+
+                    <li class="additionalButtons"><a onclick="logoutUser()">Logi V채lja</a></li>
+                </div>
+            </div>
+        </div>
+
+    </nav>
+    <!-- Second Navbar -->
+    <nav class="second-nav">
+        <a href="../" class="logo"><img src="../images/logo.png" alt="Your Logo"></a>
+        <div>
+            <a href="../artiklid">Artiklid</a>
+            <a href="../uudised">Uudised</a>
+            <a href="../trennid">Trennid</a>
+            <a href="../galerii">Galerii</a>
+            <a href="../kontakt">Kontakt</a>
+        </div>
+    </nav>
+
+    <!-- Second Navbar -->
+</div>
+
+
+<!-- Login Pop-up Box -->
+<div class="login-popup" id="loginPopup">
+    <div class="login-popup-content">
+        <span class="close-popup" onclick="closeLoginPopup()">&times;</span>
+
+        <!-- Your login form goes here -->
+        <form id="loginForm" onSubmit="loginUser(event)">
+            <!-- Add your login form fields here -->
+            <label for="loginEmail">Email:</label><br>
+            <input type="text" id="loginEmail" name="loginEmail"><br>
+
+            <label for="loginPassword">Password:</label><br>
+            <input type="password" id="loginPassword" name="loginPassword"><br>
+
+            <a href="#" style="color: blue;">Forgot your password?</a><br>
+            <button type="submit">Login</button>
+            <br>
+            <p id="loginMessage"></p>
+            <br>
+
+            <p style="text-align: center; margin-top: 10px;">Need an account? <a href="#" style="color: blue" onclick="openRegistrationPopup()" ;>Sign
+                up</a></p>
+        </form>
+    </div>
+</div>
+<div class="login-popup" id="registrationPopup">
+    <div class="login-popup-content">
+        <span class="close-popup" onclick="closeRegistrationPopup()">&times;</span>
+
+        <!-- Your registration form goes here -->
+        <form id="registerForm" onSubmit="registerUser(event)">
+            <!-- Add your registration form fields here -->
+            <label for="regName">Nimi:</label><br>
+            <input type="text" id="regName" name="regName"><br>
+
+            <label for="regEmail">Email:</label><br>
+            <input type="email" id="regEmail" name="regEmail"><br>
+
+            <label for="regPassword">Parool:</label><br>
+            <input type="password" id="regPassword" name="regPassword"><br>
+
+            <label for="regPhone">Telefon:</label><br>
+            <input type="tel" id="regPhone" name="regPhone" pattern="[0-9+]+"><br>
+
+            <button type="submit">Register</button>
+            <br>
+            <p id="registerMessage"></p>
+            <br>
+            <p style="text-align: center; margin-top: 10px;">Already have an account? <a href="#"
+                                                                                         onclick="openLoginPopup()"
+                                                                                         style="color: blue;">Login</a>
+            </p>
+        </form>
+    </div>
+</div>
+<a id="menutogglebtn" class="togglebtn" href="#">&#x2261;</a>
+<script src="https://kit.fontawesome.com/9616f6d837.js" crossorigin="anonymous"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const toggleBtn = document.querySelector(".togglebtn");
+        const secondNav = document.querySelector(".second-nav");
+        const loginPopup = document.getElementById("loginPopup");
+        const registrationPopup = document.getElemntById("registrationPopup")
+
+        toggleBtn.addEventListener("click", function () {
+            secondNav.classList.toggle("open");
+        });
+    });
+    //Login form popup hide and show
+    function openLoginPopup() {
+        loginPopup.style.display = "flex";
+        registrationPopup.style.display = "none"
+    }
+
+    function closeLoginPopup() {
+        loginPopup.style.display = "none";
+    }
+    //Reg form popup hide and show
+    function openRegistrationPopup() {
+        registrationPopup.style.display = "flex";
+        loginPopup.style.display = "none";
+    }
+
+    function closeRegistrationPopup() {
+        registrationPopup.style.display = "none";
+    }
+    //Konto button
+    function togglelisakonto_btn() {
+        var additionalButtons = document.getElementById("additionalButtons");
+        var accountArrow = document.getElementById("accountArrow");
+        if (additionalButtons.style.display === "none") {
+            additionalButtons.style.display = "block";
+            accountArrow.style.transform = "rotate(90deg)";
+        } else {
+            additionalButtons.style.display = "none";
+            accountArrow.style.transform = "rotate(180deg)";
+        }
+    }
+    //Login button ja account button display switch
+    function loginButtonDisplay(){
+        document.getElementById("login-btn").style.display = "block";
+        document.getElementById("account-btn").style.display = "none";
+    }
+    function accountButtonDisplay(){
+        document.getElementById("account-btn").style.display = "block";
+        document.getElementById("login-btn").style.display = "none";
+    }
+    function logOut(){
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "../src/Kasutaja/logout.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    // Login successful
+                    console.log("Logout Successful!")
+                    loginButtonDisplay()
+
+                } else {
+                    // Login failed
+                    console.log( "Logout failed.");
+                }
+            }
+        };
+        xhr.send();
+    }
+    async function deleteAllCookies() {
+        const cookies = document.cookie.split(";");
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i];
+            const eqPos = cookie.indexOf("=");
+            const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+            document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+            document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+        }
+    }
+
+
+
+    async function logoutUser(){
+        localStorage.clear();
+        await deleteAllCookies();
+        loginButtonDisplay()
+        logOut()
+        window.location.href = "https://lumisteviktor.ikt.khk.ee/test/Viktor_liikumine_demo/";
+        console.log('All good')
+
+    }
+
+    function navigateToAccountPage() {
+        if (window.location.pathname == '/test/Viktor_liikumine_demo/account/'){
+            window.location.href = ''
+        } else {
+            window.location.href = '../account'
+        }
+    }
+
+
+
+    function registerUser(e) {
+        e.preventDefault();
+        var regName = document.getElementById("regName").value;
+        var regEmail = document.getElementById("regEmail").value;
+        var regPassword = document.getElementById("regPassword").value;
+        var regPhone = document.getElementById("regPhone").value;
+
+        // Make an AJAX request to your PHP registration script
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "../src/Kasutaja/register.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    // Registration successful
+                    // Optionally, you can handle the response from the server
+                    document.getElementById("registerMessage").innerHTML = "Registration successful!";
+                } else {
+                    // Registration failed
+                    // Optionally, you can handle the response from the server
+                    document.getElementById("registerMessage").innerHTML = "Registration failed. Please try again.";
+                }
+            }
+        };
+
+        xhr.send("regName=" + encodeURIComponent(regName) +
+            "&regEmail=" + encodeURIComponent(regEmail) +
+            "&regPassword=" + encodeURIComponent(regPassword) +
+            "&regPhone=" + encodeURIComponent(regPhone));
+    }
+
+    function openRegistrationPopup() {
+        document.getElementById("registrationPopup").style.display = "flex";
+        loginPopup.style.display = "none";
+    }
+
+    function closeRegistrationPopup() {
+        document.getElementById("registrationPopup").style.display = "none";
+        // Optionally, you can reset the registration form fields here
+        document.getElementById("regName").value = "";
+        document.getElementById("regEmail").value = "";
+        document.getElementById("regPassword").value = "";
+        document.getElementById("regPhone").value = "";
+        document.getElementById("registerMessage").innerHTML = "";
+    }
+
+    function readCookie(cname) {
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0; i<ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0)==' ') c = c.substring(1);
+            if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+        }
+    }
+    function setCookie(cookie_name){
+        // Make an AJAX request to your PHP script
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "../src/Kasutaja/session.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    // Access the Kasutaja_ID property
+                    var value = xhr.responseText;
+                    document.cookie = cookie_name + "=" + value;
+                    if (cookie_name==="username"){
+                        document.getElementById('nimi').innerHTML = readCookie("username")
+                    }
+                } else {
+                    console.log('no cookie_name')
+                }
+
+            }
+        };
+        xhr.send("cname=" + encodeURIComponent(cookie_name));
+    }
+
+
+    async function loginUser(e) {
+        e.preventDefault();
+        var email = document.getElementById("loginEmail").value;
+        var password = document.getElementById("loginPassword").value;
+
+        // Make an AJAX request to your PHP script
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "../src/Kasutaja/login.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    // Login successful
+                    var now = new Date();
+                    var time = now.getTime();
+                    var expireTime = time + 1000*36000;
+                    now.setTime(expireTime);
+                    document.cookie = 'loggedIn=true;expires='+now.toUTCString()+';path=/';
+                    console.log("Success!")
+
+                    setCookie("email")
+                    setCookie("username")
+                    setCookie("pfp")
+
+                    accountButtonDisplay()
+                    closeLoginPopup()
+
+
+                } else {
+                    // Login failed
+                    console.log("Login failed. Invalid email or password.");
+                }
+            }
+        };
+
+
+
+        xhr.send("loginEmail=" + encodeURIComponent(email) + "&loginPassword=" + encodeURIComponent(password));
+    }
+
+</script>
+</body>
+</html>
