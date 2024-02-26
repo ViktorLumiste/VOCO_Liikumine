@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voco Liikumine</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <script src="../jquery.js"></script>
+    <style>
+        .Kontakt_container {
+            margin: 0;
+            padding: 0;
+            font-family: Montserrat, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+            position: relative;
+            background-color: #f5f5f5;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .type_container {
+            margin: 0;
+            padding: 0;
+            font-family: Montserrat, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+            position: relative;
+            background-color: #f5f5f5;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .treenerid {
+            margin: 0;
+            padding: 0;
+            font-family: Montserrat, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+            position: relative;
+            background-color: #f5f5f5;
+            padding: 20px;
+            text-align: center;
+            /* mAKE IEMS WRAP */
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .treener {
+            margin: 0;
+            padding: 0;
+            font-family: Montserrat, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+            position: relative;
+            background-color: #f5f5f5;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .treener table {
+            margin: 0;
+            padding: 0;
+            font-family: Montserrat, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+            position: relative;
+            background-color: #e9eff7;
+            padding: 20px;
+            text-align: center;
+            /* Shadow effect */
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        .treener img {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .treener h2,
+        .treener p,
+        .trainers_gmail,
+        .Trainers_sport {
+            text-align: left;
+        }
+
+        .treener h2 {
+            margin: 0;
+            padding: 20px 0;
+            font-size: 24px;
+            font-weight: 600;
+            color: #000;
+        }
+
+        .treener p,
+        .trainers_gmail,
+        .Trainers_sport {
+            margin: 0;
+            padding: 5px 0;
+            font-size: 18px;
+            font-weight: 400;
+            color: #000;
+            text-decoration: none;
+        }
+
+        td {
+            padding: 10px;
+        }
+
+        /* hovering effects */
+        .treener table:hover {
+            box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+        }
+
+
+        .trainers_gmail:hover,
+        .Trainers_sport:hover {
+            color: #808892;
+
+        }
+    </style>
+    <script>
+
+        $(function(){
+            $("#includeNavBar").load("../components/navbar.html")
+            $("#includeFooter").load("../components/footers.html")
+
+        })
+
+    </script>
+</head>
+<body>
+
+<div id="includeNavBar"></div>
+
+<!-- Your page content goes here -->
+<div class="Kontakt_container">
+    <div class="type_container">
+        <h1>Treenerid</h1>
+        <div class="treenerid" id="TreenerKontakt">
+
+
+        </div>
+    </div>
+</div>
+
+<!-- Your page content ends here -->
+
+
+
+<div id="includeFooter"></div>
+
+<script src="https://kit.fontawesome.com/9616f6d837.js" crossorigin="anonymous"></script>
+<script>
+    async function loadTreeners(){
+        // Make an AJAX request to your PHP script
+        var xhr = new XMLHttpRequest();
+        xhr.open("get", "../src/Trenn/get_Treener.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    document.getElementById("TreenerKontakt").innerHTML = this.responseText;
+                    console.log(this.responseText)
+                } else {
+                    // Login failed
+                    console.log("Login failed. Invalid email or password.");
+                }
+            }
+        };
+        xhr.send();
+    }
+    window.onload = () => {
+        loadTreeners()
+    };
+
+</script>
+</body>
+</html>
