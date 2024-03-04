@@ -70,11 +70,15 @@
             <div style="display:flex">
                 <div>
                     <label for="newUsername">Change Username:</label><br>
-                    <label for="newPassword">Change Password:</label>
+                    <label for="newPassword">Change Password:</label><br>
+                    <label for="newEmail">Change Email:</label><br>
+                    <label for="newPhone">Change Phone:</label>
                 </div>
                 <div>
                     <input type="text" id="newUsername" name="newUsername"><br>
-                    <input type="password" id="newPassword" name="newPassword">
+                    <input type="password" id="newPassword" name="newPassword"><br>
+                    <input type="email" id="newEmail" name="newEmail"><br>
+                    <input type="phone" id="newPhone" name="newPhone">
                 </div>
             </div>
 
@@ -108,6 +112,8 @@
         e.preventDefault();
         var newUsername = document.getElementById("newUsername").value;
         var newPassword = document.getElementById("newPassword").value;
+        var newEmail = document.getElementById("newEmail").value;
+        var newPhone = document.getElementById("newPhone").value;
         var email = await readCookie('email')
         // Make an AJAX request to your PHP script
         var xhr = new XMLHttpRequest();
@@ -124,7 +130,7 @@
 
             }
         };
-        xhr.send("username=" + encodeURIComponent(newUsername) + "&password=" + encodeURIComponent(newPassword)+ "&email=" +encodeURIComponent(email));
+        xhr.send("username=" + encodeURIComponent(newUsername) + "&password=" + encodeURIComponent(newPassword)+ "&email=" +encodeURIComponent(email)+ "&newemail=" +encodeURIComponent(newEmail)+ "&phone=" +encodeURIComponent(newPhone));
     }
     async function uploadImage(){
         var email = await readCookie('email')

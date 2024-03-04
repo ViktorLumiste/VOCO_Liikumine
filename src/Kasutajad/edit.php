@@ -3,15 +3,19 @@
 // Database credentials
 require '../Database.php';
 global $conn;
-//Receive data from the front-end POST
+
 $newUsername = $_POST['username'];
 $newPassword = $_POST['password'];
+$newEmail = $_POST['newemail'];
+$newPhone = $_POST['phone'];
 $email = $_POST['email'];
-//Rehash the new password
+
 $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
-//Insert new data into the db
-$sql = "UPDATE KASUTAJAD SET Nimi='$newUsername', Parool='$hashedPassword' where Email='$email';";
+
+$sql = "UPDATE KASUTAJAD SET Nimi='$newUsername', Parool='$hashedPassword', Email='$newEmail', Telefon='$newPhone' where Email='$email';";
 
 $result = $conn->query($sql);
+echo $sql;
+// Close the database connection
 $conn->close();
 ?>
