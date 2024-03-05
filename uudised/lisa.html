@@ -139,7 +139,16 @@
 <body>
 
 <div id="includeNavBar"></div>
+<div>
+    <label for="title">Title:</label>
+    <input type="text" id="title" name="title">
 
+    <input type="file" id="thumbnail-insert" name="avatar" accept="image/png, image/jpeg" /><br>
+    <div id="thumbnail-preview">
+        <p>No files currently selected for upload</p>
+    </div>
+    <br><br>
+</div>
 <!-- Your page content goes here -->
 <div class="toolbar">
     <button onclick="execCmd('bold')" title="Bold"><i class="fa-solid fa-bold"></i></button>
@@ -242,6 +251,10 @@
         document.addEventListener('drop', function (e) {
             e.preventDefault();
         });
+        const input = document.getElementById("thumbnail-insert");
+
+
+        input.addEventListener("change", updateImageDisplay);
     });
 
 
@@ -279,12 +292,36 @@
         target.setAttribute('data-y', y);
     }
 
+    function updateImageDisplay() {
+        const preview = document.getElementById("thumbnail-preview");
+        const input = document.getElementById("thumbnail-insert");
+        while (preview.firstChild) {
+            preview.removeChild(preview.firstChild);
+        }
 
+        const curFiles = input.files;
+        if (curFiles.length === 0) {
+            const para = document.createElement("p");
+            para.textContent = "No files currently selected for upload";
+            preview.appendChild(para);
+        } else {
+            const list = document.createElement("ol");
+            preview.appendChild(list);
 
+            for (const file of curFiles) {
+                const listItem = document.createElement("li");
+                const para = document.createElement("p");
+                const image = document.createElement("img");
+                image.src = URL.createObjectURL(file);
+                image.alt = image.title = file.name;
 
+                listItem.appendChild(image);
+                listItem.appendChild(para);
 
-
-
+                list.appendChild(listItem);
+            }
+        }
+    }
 
     function handleDrop(files) {
         for (var i = 0; i < files.length; i++) {
@@ -349,19 +386,65 @@
             e.preventDefault();
         });
     }
+    function handleThumbnail() {
+        const imageInput = document.getElementById('thumbnail-insert');
+        const file = imageInput.files[0];
 
+        if (file) {
+            const reader = new FileReader();
 
+            return new Promise((resolve, reject) => {
+                reader.onload = function (e) {
+                    const base64String = e.target.result;
+                    resolve(base64String);
+                };
 
-    function exportContent() {
-        var content = document.getElementById('editableDiv').innerHTML;
-        var blob = new Blob([content], { type: 'text/html' });
-        var url = URL.createObjectURL(blob);
+                // Handle potential errors during reading
+                reader.onerror = function (error) {
+                    reject(error);
+                };
 
-        var a = document.createElement('a');
-        a.href = url;
-        a.download = 'exported_content.html';
-        a.click();
+                // Read the file as a data URL
+                reader.readAsDataURL(file);
+            });
+        } else {
+            alert('Please select an image file.');
+            return Promise.reject('No file selected');
+        }
     }
+
+
+    async function exportContent() {
+        const content = document.getElementById('editableDiv').innerHTML;
+        const title = document.getElementById('title').value;
+        const input = document.getElementById("thumbnail-insert");
+        const thumbnail = await handleThumbnail()
+        console.log(thumbnail)
+        console.log(content)
+        console.log(title)
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "../src/Uudised/lisa.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                console.log(xhr.responseText)
+                if (xhr.responseText === "News added successfully"){
+                    // window.location.href= '../'
+                }
+            }
+        };
+
+        xhr.send("content=" + encodeURIComponent(content) + "&title=" +encodeURIComponent(title) +"&thumbnail="+encodeURIComponent(thumbnail));
+    }
+    function execCmd(command, value) {
+        if (command === 'insertOrderedList' || command === 'insertUnorderedList') {
+            document.execCommand(command, false, null);
+            updateListStyles(); // Update list styles after inserting a list
+        } else {
+            document.execCommand(command, false, value);
+        }
+    }
+
     function execCmd(command, value) {
         if (command === 'insertOrderedList' || command === 'insertUnorderedList') {
             document.execCommand(command, false, null);
@@ -426,6 +509,34 @@
 
         closeLinkModal();
     }
+    $(document).ready(function() {
+        $("#includeNavBar").load("../components/navbar.html", function () {
+            // Callback function - this runs after the content is loaded
+            checkLogStatus();
+        });
+        async function checkLogStatus() {
+            try {
+                logStatus = await readCookie("loggedIn");
+                console.log('Read cookie result:', logStatus);
+
+                if (!logStatus) {
+                    localStorage.clear();
+                    deleteAllCookies();
+                    loginButtonDisplay()
+                } else {
+                    accountButtonDisplay()
+                    setCookie('username')
+                }
+            } catch (error) {
+                console.error('Error in checkLogStatus:', error);
+            }
+        }
+
+        function accountButtonDisplay() {
+            document.getElementById("account-btn").style.display = "block";
+            document.getElementById("login-btn").style.display = "none";
+        }
+    });
 
 </script>
 </body>

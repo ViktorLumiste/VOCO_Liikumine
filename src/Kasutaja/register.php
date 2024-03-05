@@ -16,7 +16,7 @@ $role = $_POST['regRole'];
 // Hash the password for security
 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 // Insert the user data into the db
-$sql = "INSERT INTO KASUTAJAD (Nimi, Email, Parool, Pilt, Telefon,roll) VALUES ('$name', '$email', '$hashedPassword', '$picture','$phone','$role')";
+$sql = "INSERT INTO KASUTAJAD (Nimi, Email, Parool, Pilt, Telefon, roll) VALUES ('$name', '$email', '$hashedPassword', '$picture','$phone','$role')";
 
 if ($conn->query($sql) === TRUE) {
     echo "User registered successfully";

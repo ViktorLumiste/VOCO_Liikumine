@@ -10,7 +10,6 @@
     <script>
 
         $(function(){
-            $("#includeNavBar").load("../components/navbar.html")
             $("#includeFooter").load("../components/footers.html")
 
         })
@@ -24,13 +23,60 @@
 <div id="includeNavBar"></div>
 
 <!-- Your page content goes here -->
-<a href="lisa.html">Lisa uus Uudis</a>
+<a id="newNews" href="lisa.html">Lisa uus Uudis</a>
 <!-- Your page content ends here -->
+<div id="newsDisplay">
 
+</div>
 
 
 <div id="includeFooter"></div>
 
 <script src="https://kit.fontawesome.com/9616f6d837.js" crossorigin="anonymous"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                if(readCookie("role") !== "t"){
+                    document.getElementById("newNews").style.display = "none";
+                }
+
+                document.getElementById("newsDisplay").innerHTML = this.responseText;
+            }
+        };
+
+        xhr.open("GET", "../src/Uudised/get_News.php", true);
+        xhr.send();
+    })
+    $(document).ready(function() {
+        $("#includeNavBar").load("../components/navbar.html", function () {
+            // Callback function - this runs after the content is loaded
+            checkLogStatus();
+        });
+        async function checkLogStatus() {
+            try {
+                logStatus = await readCookie("loggedIn");
+                console.log('Read cookie result:', logStatus);
+
+                if (!logStatus) {
+                    localStorage.clear();
+                    deleteAllCookies();
+                    loginButtonDisplay()
+                } else {
+                    accountButtonDisplay()
+                    setCookie('username')
+                }
+            } catch (error) {
+                console.error('Error in checkLogStatus:', error);
+            }
+        }
+
+        function accountButtonDisplay() {
+            document.getElementById("account-btn").style.display = "block";
+            document.getElementById("login-btn").style.display = "none";
+        }
+    });
+</script>
 </body>
 </html>
