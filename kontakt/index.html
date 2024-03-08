@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Voco Liikumine</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-    <script src="../jquery.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <style>
         .Kontakt_container {
             margin: 0;
@@ -116,7 +116,6 @@
     <script>
 
         $(function(){
-            $("#includeNavBar").load("../components/navbar.html")
             $("#includeFooter").load("../components/footers.html")
 
         })
@@ -146,6 +145,35 @@
 
 <script src="https://kit.fontawesome.com/9616f6d837.js" crossorigin="anonymous"></script>
 <script>
+    $(document).ready(function() {
+        $("#includeNavBar").load("../components/navbar.html", function () {
+            // Callback function - this runs after the content is loaded
+            checkLogStatus();
+        });
+        async function checkLogStatus() {
+            try {
+                logStatus = await readCookie("loggedIn");
+                console.log('Read cookie result:', logStatus);
+
+                if (!logStatus) {
+                    localStorage.clear();
+                    deleteAllCookies();
+                    loginButtonDisplay()
+                } else {
+                    accountButtonDisplay()
+                    setCookie('username')
+                }
+            } catch (error) {
+                console.error('Error in checkLogStatus:', error);
+            }
+        }
+
+        function accountButtonDisplay() {
+            document.getElementById("account-btn").style.display = "block";
+            document.getElementById("login-btn").style.display = "none";
+        }
+        loadTreeners()
+    });
     async function loadTreeners(){
         // Make an AJAX request to your PHP script
         var xhr = new XMLHttpRequest();
@@ -164,9 +192,6 @@
         };
         xhr.send();
     }
-    window.onload = () => {
-        loadTreeners()
-    };
 
 </script>
 </body>
