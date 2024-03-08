@@ -8,6 +8,7 @@ global $conn;
 $thumbnail = $_POST['thumbnail'];
 $title = $_POST['title'];
 $content = $_POST['content'];
+$content = str_replace("'", "\'", $content);
 session_start();
 $user = $_SESSION['username'];
 
