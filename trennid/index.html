@@ -6,7 +6,7 @@
     <title>Double Navbar</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <link rel="stylesheet" href="../style.css">
-    <script src="../jquery.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script>
 
         $(function(){
@@ -16,10 +16,6 @@
 
     </script>
     <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
 
         th, td {
             border: 1px solid #ddd;
@@ -36,9 +32,9 @@
         td{
             height: 400px; /* Increase the default height for each cell */
         }
+
         .activity {
             position: absolute;
-            background-color: #007bff;
             color: white;
             border-radius: 5px;
             padding: 3px;
@@ -77,140 +73,48 @@
             z-index: 0; /* Ensure time markers appear below activities */
             left: 0; /* Ensure the hour-marker starts from the left edge */
         }
-
-        .activity button {
-            display: block;
-            margin-top: 5px;
-        }
-        .trennid {
-            border-collapse: collapse;
-            width: 100%;
-        }
-        .trennid th, td {
-            border: 1px solid #dddddd;
-        }
-        .trennid th {
-            background-color: #f2f2f2;
-            align-items:center;
-        }
-        .trennid li{
-            display:block;
-            padding:10px;
-            background-color:red;
-            border: 1px solid black;
-            top:0;
-
-        }
         .catalogue-filters {
             border: 1px solid #ccc;
             padding: 10px;
             border-radius: 5px;
             background-color: #f9f9f9;
         }
-        .dropdown-item {
-            margin-bottom: 10px;
-        }
-        .dropdown-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            padding: 5px 10px;
-            background-color: #ddd;
-            border-radius: 3px;
 
+        @media only screen and (max-width: 991px) {
+            .table-container {
+                display: column;
+            }
+            table {
+                border-collapse: collapse;
+                width: 100%;
+            }
         }
-        .dropdown-body {
-            overflow: hidden;
-            transition: max-height 0.3s ease;
+        @media only screen and (min-width: 991px) {
+            .table-container {
+                display: flex;
+            }
+            table {
+                border-collapse: collapse;
+                width: 20%;
+            }
         }
-        .availability-filter {
-            margin-bottom: 10px;
-        }
-        .checkbox-input {
-            margin-bottom: 5px;
-        }
-        ._error {
-            color: red;
-            margin-left: 5px;
-        }
-
-        /* Styling for checkboxes */
-        ._checkbox-wrapper {
-            display: inline-block;
-            position: relative;
-            padding-left: 25px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        ._checkbox-wrapper input {
-            position: absolute;
-            opacity: 0;
-            cursor: pointer;
-        }
-
-        .checkmark {
-            position: absolute;
+        .overlay {
+            display: none;
+            position: fixed;
             top: 0;
             left: 0;
-            height: 20px;
-            width: 20px;
-            background-color: #ccc;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index:999;
         }
-
-        ._checkbox-wrapper:hover input ~ .checkmark {
-            background-color: #ccc;
-        }
-
-        ._checkbox-wrapper input:checked ~ .checkmark {
-            background-color: #2196F3;
-        }
-
-        .checkmark:after {
-            content: "";
-            position: absolute;
-            display: none;
-        }
-
-        ._checkbox-wrapper input:checked ~ .checkmark:after {
-            display: block;
-        }
-
-        ._checkbox-wrapper .checkmark:after {
-            left: 7px;
-            top: 3px;
-            width: 5px;
-            height: 10px;
-            border: solid white;
-            border-width: 0 3px 3px 0;
-            transform: rotate(45deg);
-        }
-
-        /* Hide the checkboxes */
-        ._checkbox-wrapper input {
-            display: none;
-        }
-        @media only screen and (max-width: 990px) {
-            td{
-                height: 800px; /* Increase the default height for each cell */
-            }
-
-        }
-        @media only screen and (max-width: 990px) {
-            td{
-                height: 800px; /* Increase the default height for each cell */
-            }
-            table,
-            th,
-            td,
-            p{
-                font-size: smaller;
-            }
-            .activity .activityTime {
-                font-size:x-small;
-
-            }
+        .popup {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 
         }
 
@@ -247,21 +151,41 @@
     <option value="">All</option>
     <!-- Options will be dynamically generated here -->
 </select>
+<button id="newAct" onclick="openNewActivity()" style="display:none;">Lisa uus Trenn</button>
+<div id="popupOverlay" class="overlay">
+    <!-- Popup content -->
+    <div class="popup">
+        <h2>Popup Form</h2>
+        <div id="popupForm">
+            <label for="newActType">Trenni Tüüp(Hetkel ei saa veel lisada tüüpe):</label>
+            <select type="text" id="newActType" name="newActType" required>
+
+            </select><br>
+
+            <label for="newActDay">Päev:</label>
+            <input type="date" id="newActDay" name="newActDay" required><br>
+
+            <label for="newActStart">Algab:</label>
+            <input type="time" id="newActStart" name="newActStart" required><br>
+
+            <label for="newActEnd">Lõpeb:</label>
+            <input type="time" id="newActEnd" name="newActEnd" required><br>
+
+            <label for="newActMax">Max Osalejate Arv:</label>
+            <input type="number" id="newActMax" name="newActMax" required><br>
+
+            <label for="newActPlace">Asukoht:</label>
+            <input type="text" id="newActPlace" name="newActPlace" required><br>
+
+            <button onclick="submitNewActivity()">Submit</button>
+        </div>
+        <button onclick="closePopup()">Close</button>
+    </div>
+</div>
 <!--Table-->
-<table>
-    <thead>
-    <tr>
-        <th>Monday</th>
-        <th>Tuesday</th>
-        <th>Wednesday</th>
-        <th>Thursday</th>
-        <th>Friday</th>
-    </tr>
-    </thead>
-    <tbody id="scheduleBody">
-    <!-- Schedule data will be displayed here -->
-    </tbody>
-</table>
+<div id="scheduleBody" class="table-container">
+
+</div>
 
 <!--</div>-->
 
@@ -277,7 +201,10 @@
 
 <script src="https://kit.fontawesome.com/9616f6d837.js" crossorigin="anonymous"></script>
 <script>
+    var activityOptions = []
     document.addEventListener("DOMContentLoaded", function() {
+
+        getActivityOptions()
         // Get all dropdown headers
         var dropdownHeaders = document.querySelectorAll('.dropdown-header');
 
@@ -300,7 +227,41 @@
             });
         });
     });
+    async function checkTreener(){
+        if(readCookie("role") == "t"){
+            document.getElementById("newAct").style.display = "block";
+        }
+    }
+    function openNewActivity(){
+        document.getElementById('popupOverlay').style.display = 'flex';
+    }
+    function closePopup() {
+        document.getElementById('popupOverlay').style.display = 'none';
 
+
+    }
+    function bodyOverflow(){
+        document.body.style = 'overflow: auto'
+    }
+    function submitNewActivity() {
+        const actType = document.getElementById('newActType').value;
+        const actDay = document.getElementById('newActDay').value;
+        const actStart = document.getElementById('newActStart').value;
+        const actEnd = document.getElementById('newActEnd').value;
+        const actMax = document.getElementById('newActMax').value;
+        const actPlace = document.getElementById('newActPlace').value;
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "../src/Trenn/newActivity.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                console.log(this.responseText)
+            }
+        };
+        xhr.send("actType=" + encodeURIComponent(actType) + "&actDay=" + encodeURIComponent(actDay)+ "&actStart=" + encodeURIComponent(actStart)+ "&actEnd=" + encodeURIComponent(actEnd)+ "&actMax=" + encodeURIComponent(actMax)+ "&actPlace=" + encodeURIComponent(actPlace));
+        alert('Form submitted!');
+        closePopup(); // Close the popup after submission
+    }
     function getWeek(){
         currentDate = new Date();
         startDate = new Date(currentDate.getFullYear(), 0, 1);
@@ -392,6 +353,29 @@
                 });
             })
             .catch(error => console.error('Error fetching schedule data:', error));
+    }
+    async function getActivityOptions(){
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "../src/Trenn/getActivityOptions.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                console.log(xhr.responseText)
+                const rows = JSON.parse(xhr.responseText);
+                rows.forEach(post => {
+                    const postElement = document.createElement("option");
+                    postElement.className = "ActivityOption";
+                    postElement.value = `${post.Trenni_ID}`;
+
+                    // Render other post details as before
+                    postElement.innerHTML = `
+                    ${post.Tegevus}, ${post.Kirjeldus}, ${post.Kellele} Jaoks
+                    `;
+                    newActType.appendChild(postElement);
+                });
+            }
+        };
+        xhr.send();
     }
     function changeWeek(weekNum){
         fetch('../src/Trenn/get_schedule.php', {
@@ -510,6 +494,26 @@
 
         return new Date(Date.UTC(y, 0, d));
     }
+    function regToActivity(ID){
+        if(readCookie("loggedIn")){
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "../src/Trenn/regToActivity.php", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    console.log(this.responseText)
+                    changeWeek(weekNumber)
+                }
+            };
+            xhr.send("ID=" + encodeURIComponent(ID));
+        } else {
+            alert('Logige sisse!!')
+        }
+    }
+
+
+
+
     // Function to display schedule based on filter
     function displaySchedule(data) {
         const scheduleBody = document.getElementById('scheduleBody');
@@ -523,10 +527,48 @@
 
         daysOfWeek.forEach(day => {
             const activities = data[day];
+            const day1Column = document.createElement('table');
+
+            const dayoftheweek = document.createElement('th');
+            dayoftheweek.innerHTML = `${day}`;
+            dayoftheweek.className = 'day-of-the-week';
+            day1Column.appendChild(dayoftheweek);
+
+            const dayColumntr = document.createElement('tr');
             const dayColumn = document.createElement('td');
+            dayColumntr.appendChild(dayColumn);
+
             const timeSlots = {}; // Store occupied time slots for each day
 
             activities.forEach(activity => {
+                const activityPopup = document.createElement('div');
+                activityPopup.id = 'overlay';
+                activityPopup.style = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60%; max-width: 600px; background: #fff; box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); z-index: 999; display: none; padding:30px;';
+                activityPopup.className = 'popup';
+                activityPopup.innerHTML = `
+                <div class="popup-titlebar">
+                    <h2>${activity.activityName}</h2>
+
+                </div>
+                <div class="popup-content" style="color:black;">
+                    <p style="color:black;"><strong>Kell:</strong> ${activity.start_time} - ${activity.end_time}</p>
+                    <p style="color:black;"><strong>Koht:</strong> ${activity.placeName}</p>
+                    <p style="color:black;"><strong>Asukoht:</strong> ${activity.targetName}</p>
+                    <p style="color:black; flex:right" class="activityPpl"><strong>Osalejate arv:</strong>${activity.Cur_Ppl}/${activity.Max_Ppl}</p>
+                    <p style="color:black;">${activity.Description}</p>
+                    <!-- Add more information as needed -->
+                    <div style="display:flex;right: 0px;bottom: 20px;position: absolute;margin-right: 20px;" >
+                        <button onclick="this.parentElement.parentElement.parentElement.style.display = 'none';bodyOverflow()" style="margin-right: 10px;">Close</button>
+                        <p style="color:black; margin-right: 20px; border:1px solid; padding: 5px; border-radius:10px" class="activityButton" onclick=(regToActivity(${activity.ID}))>Registreeri</p>
+                    </div>
+                </div>
+            `;
+
+                document.body.appendChild(activityPopup);
+
+                // Add a function to close the popup
+
+
                 // Apply filters if selected
                 if ((selectedFilter === '' || activity.activityName === selectedFilter) &&
                     (selectedPlace === '' || activity.placeName === selectedPlace) &&
@@ -548,13 +590,42 @@
 
                     const activityElement = document.createElement('div');
                     activityElement.className = 'activity';
+
+                    // Adding a click event listener
+                    activityElement.addEventListener('click', function () {
+                        // Toggle the display of the popup
+                        if (activityPopup.style.display === 'none') {
+                            activityPopup.style.display = 'block';
+                            document.body.style = 'overflow: hidden'
+                        }
+                    });
+
                     activityElement.style.top = `${adjustedTop}%`;
                     activityElement.style.height = `${height}%`;
-                    activityElement.innerHTML = `<div><p class="activityName">${activity.activityName}</p> <p class="activityTime">${activity.start_time} - ${activity.end_time}</p></div> <p class="activityButton">Button</p>`;
+                    switch (activity.activityName) {
+                        case "Vorkpall":
+                            activityElement.style.backgroundColor = "#007bff";
+                            break;
+                        case "Jalgpall":
+                            activityElement.style.backgroundColor = "#008000";
+                            break;
+                        case "Korvpall":
+                            activityElement.style.backgroundColor = "#FFA500";
+                            break;
+                        default:
+                            // Default case if activityName doesn't match any of the specified values
+                            break;
+                    }
+
+
+                    activityElement.innerHTML = `<div><p class="activityName">${activity.activityName}</p>
+                <p class="activityTime">${activity.start_time} - ${activity.end_time}</p></div>
+                <p class="activityPpl">${activity.Cur_Ppl}/${activity.Max_Ppl}</p>
+                <p class="activityButton" onclick=(regToActivity(${activity.ID}))>Registreeri</p>`;
                     dayColumn.appendChild(activityElement);
+                    dayColumn.appendChild(activityPopup);
                 }
             });
-
 
             // Add hourly markers
             for (let i = 8; i <= 24; i++) {
@@ -564,9 +635,11 @@
                 hourMarker.style.top = `${markerTop}%`;
                 dayColumn.appendChild(hourMarker);
             }
-            scheduleBody.appendChild(dayColumn);
-        });
+            day1Column.appendChild(dayColumntr);
+            scheduleBody.appendChild(day1Column);
+        })
     }
+
     window.onload = () => {
         const options = {
             weekday: 'long',
@@ -593,6 +666,7 @@
                     deleteAllCookies();
                     loginButtonDisplay()
                 } else {
+                    checkTreener()
                     accountButtonDisplay()
                     setCookie('username')
                 }
