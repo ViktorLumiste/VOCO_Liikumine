@@ -5,15 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Voco Liikumine</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://lumisteviktor.ikt.khk.ee/liikumine_demo/style.css">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
-    <script src="jquery.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script>
         $(function(){
-            $("#includeNavBar").load("indexComponents/navbar.html")
-            $("#includeFooter").load("indexComponents/footers.html")
+            $("#includeFooter").load("https://lumisteviktor.ikt.khk.ee/liikumine_demo/components/footers.html")
 
         })
     </script>
@@ -48,7 +47,7 @@
         <a id="Kõik_uudised">KÕIK UUDISED<i class="fa-solid fa-arrow-right"></i></a>
         <div class="uudised_info">
             <div id="uudis1" class="uudis">
-                <img class="uudis_img" id="uudis_img1" alt="uudis_img" src="images/uudis1.png">
+                <img class="uudis_img" id="uudis_img1" alt="uudis_img" src="https://lumisteviktor.ikt.khk.ee/liikumine_demo/images/uudis1.png">
                 <p class="uudis_date" id="uudis_date1">03.11.2023</p>
                 <h3 class="uudis_title" id="uudis_title1">Uudis 1</h3>
                 <p class="uudis_text" id="uudis_text1">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
@@ -60,7 +59,7 @@
                     leo.</p>
             </div>
             <div id="uudis2" class="uudis">
-                <img class="uudis_img" id="uudis_img2" alt="uudis_img" src="images/uudis2.jpg">
+                <img class="uudis_img" id="uudis_img2" alt="uudis_img" src="https://lumisteviktor.ikt.khk.ee/liikumine_demo/images/uudis2.jpg">
                 <p class="uudis_date" id="uudis_date2">03.11.2023</p>
                 <h3 class="uudis_title" id="uudis_title2">Uudis 2</h3>
                 <p class="uudis_text" id="uudis_text2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
@@ -105,7 +104,7 @@
         }
     }
     $(document).ready(function() {
-        $("#includeNavBar").load("indexComponents/navbar.html", function () {
+        $("#includeNavBar").load("components/navbar.html", function () {
             // Callback function - this runs after the content is loaded
             checkLogStatus();
         });
@@ -128,7 +127,7 @@
         }
 
         function accountButtonDisplay() {
-            document.getElementById("account-btn").style.display = "block";
+            document.getElementById("account-btn").style.display = "flex";
             document.getElementById("login-btn").style.display = "none";
         }
     });
