@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voco Liikumine</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+
+        $(function(){
+            $("#includeFooter").load("../components/footers.html")
+
+        })
+
+    </script>
+    <style>
+        #post-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .post {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 15px;
+        }
+
+        #new-post-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #fff;
+            padding: 20px;
+            border: 1px solid #ccc;
+            z-index: 1000;
+        }
+
+        #overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        li{
+            border:solid 1px;
+            border-radius 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="includeNavBar"></div>
+<div>
+    <select id="sortOptions" onchange="changeSorting()">
+        <option value="date">Date</option>
+        <option value="title">A-Z</option>
+        <option value="comments">Amount of Comments</option>
+    </select>
+</div>
+
+
+<div id="post-container"></div>
+
+<button onclick="openNewPostPopup()">New Post</button>
+
+<div id="new-post-popup">
+    <h2>Create a New Post</h2>
+    <label for="post-title">Title:</label>
+    <input type="text" id="post-title" required><br>
+
+    <label for="post-content">Content:</label>
+    <textarea id="post-content" required></textarea><br>
+
+    <label for="post-image">Image URL or Paste Image:</label><br>
+    <input type="text" id="post-image">
+    <input type="file" id="file-input" accept="image/*" style="display: none;">
+    <button onclick="uploadImage()">Upload Image</button><br>
+
+    <button onclick="submitPost()">Submit Post</button>
+    <button onclick="closeNewPostPopup()">Cancel</button>
+</div>
+
+<div id="overlay"></div>
+
+
+
+<div id="includeFooter"></div>
+<script src="https://kit.fontawesome.com/9616f6d837.js" crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function() {
+        $("#includeNavBar").load("../components/navbar.html", function () {
+            // Callback function - this runs after the content is loaded
+            checkLogStatus();
+        });
+        async function checkLogStatus() {
+            try {
+                logStatus = await readCookie("loggedIn");
+                console.log('Read cookie result:', logStatus);
+
+                if (!logStatus) {
+                    localStorage.clear();
+                    deleteAllCookies();
+                    loginButtonDisplay()
+                } else {
+                    accountButtonDisplay()
+                    setCookie('username')
+                }
+            } catch (error) {
+                console.error('Error in checkLogStatus:', error);
+            }
+        }
+
+        function accountButtonDisplay() {
+            document.getElementById("account-btn").style.display = "block";
+            document.getElementById("login-btn").style.display = "none";
+        }
+        renderPosts()
+    });
+
+
+    // Add a variable to store the current sorting option
+    let currentSortingOption = "date";
+
+    function changeSorting() {
+        // Update the current sorting option
+        currentSortingOption = document.getElementById("sortOptions").value;
+
+        // Re-render posts based on the new sorting option
+        renderPosts();
+    }
+
+    function sortPosts(posts) {
+        switch (currentSortingOption) {
+            case "date":
+                // Sort posts by date (assuming 'Postimise_Aeg' is the date property)
+                posts.sort((a, b) => new Date(b.Postimise_Aeg) - new Date(a.Postimise_Aeg));
+                break;
+            case "title":
+                // Sort posts by title (assuming 'Pealkiri' is the title property)
+                posts.sort((a, b) => a.Pealkiri.localeCompare(b.Pealkiri));
+                break;
+            case "comments":
+                // Sort posts by the amount of comments (assuming 'Comments' is the comment count property)
+                posts.sort((a, b) => b.Comments - a.Comments);
+                break;
+            default:
+                // Default to sorting by date
+                posts.sort((a, b) => new Date(b.Postimise_Aeg) - new Date(a.Postimise_Aeg));
+                break;
+        }
+
+        // Move pinned posts to the beginning
+        posts.sort((a, b) => (b.Kinnitatud === 't') - (a.Kinnitatud === 't'));
+    }
+
+    async function renderPosts() {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "../src/Foorum/getPosts.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                const posts = JSON.parse(this.responseText);
+
+                // Call the sortPosts function to sort posts based on the current option
+                sortPosts(posts);
+
+                const postContainer = document.getElementById("post-container");
+                postContainer.innerHTML = "";
+
+                posts.forEach(post => {
+                    const postElement = document.createElement("div");
+                    postElement.className = "post";
+
+                    // Change background color for pinned posts
+                    if (post.Kinnitatud === 't') {
+                        postElement.style.backgroundColor = "#FFD700"; // Use your desired background color
+                    }
+
+                    // Render other post details as before
+                    postElement.innerHTML = `
+                        <h3>${post.Pealkiri}</h3> <p>${post.Postimise_Aeg}</p>
+                        <p>${post.Nimi}</p>
+                        <p>${post.Tekst}</p>
+                        <img src="${post.Pilt}" alt="Post Image" style="max-width: 100%;">
+                        <button onclick="viewPost(${post.Foorum_ID})">View Post</button>
+                        <p>Comments:${post.Comments}</p>
+                    `;
+                    postContainer.appendChild(postElement);
+                });
+            }
+        };
+        xhr.send();
+    }
+
+    function openNewPostPopup() {
+        document.getElementById("new-post-popup").style.display = "block";
+        document.getElementById("overlay").style.display = "block";
+    }
+
+    function closeNewPostPopup() {
+        document.getElementById("new-post-popup").style.display = "none";
+        document.getElementById("overlay").style.display = "none";
+    }
+
+    function uploadImage() {
+        const fileInput = document.getElementById("file-input");
+        fileInput.click();
+
+        fileInput.addEventListener("change", function () {
+            const file = fileInput.files[0];
+
+            // Check if the file size is within an acceptable range (e.g., 5 MB)
+            const maxSizeInBytes = 5 * 1024 * 1024; // 5 MB
+            if (file.size > maxSizeInBytes) {
+                alert("File size exceeds the maximum allowed limit.");
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                const img = new Image();
+
+                img.onload = function () {
+                    document.getElementById("post-image").value = e.target.result;
+                };
+
+                img.src = e.target.result;
+            };
+
+            reader.readAsDataURL(file);
+        });
+    }
+
+
+
+    function submitPost() {
+        const title = document.getElementById("post-title").value;
+        const content = document.getElementById("post-content").value;
+        const image = document.getElementById("post-image").value;
+
+        if (title && content) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "../src/Foorum/newPost.php", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    console.log(this.responseText)
+                }
+            };
+            xhr.send("title=" + encodeURIComponent(title) + "&content=" + encodeURIComponent(content)+ "&image=" +encodeURIComponent(image));
+            renderPosts();
+            closeNewPostPopup();
+        } else {
+            alert("Please fill out both title and content fields.");
+        }
+    }
+
+    function viewPost(postIndex) {
+        window.location.href = `post.html?id=${postIndex}`;
+    }
+</script>
+</body>
+</html>

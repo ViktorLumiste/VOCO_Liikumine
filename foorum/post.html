@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voco Liikumine</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+
+        $(function(){
+            $("#includeFooter").load("../components/footers.html")
+
+        })
+
+    </script>
+    <style>
+        #post-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .post {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 15px;
+        }
+
+        #new-post-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #fff;
+            padding: 20px;
+            border: 1px solid #ccc;
+            z-index: 1000;
+        }
+
+        #overlay {
+            width: 100%;
+            height: 100%;
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+
+<div id="includeNavBar"></div>
+
+<br><br><br><br><br><br>
+<div id="overlay"></div>
+<br><br><br><br><br><br>
+
+
+<div id="includeFooter"></div>
+<script src="https://kit.fontawesome.com/9616f6d837.js" crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function() {
+        $("#includeNavBar").load("../components/navbar.html", function () {
+            // Callback function - this runs after the content is loaded
+            checkLogStatus();
+        });
+        async function checkLogStatus() {
+            try {
+                logStatus = await readCookie("loggedIn");
+                console.log('Read cookie result:', logStatus);
+
+                if (!logStatus) {
+                    localStorage.clear();
+                    deleteAllCookies();
+                    loginButtonDisplay()
+                } else {
+                    accountButtonDisplay()
+                    setCookie('username')
+                }
+            } catch (error) {
+                console.error('Error in checkLogStatus:', error);
+            }
+        }
+
+        function accountButtonDisplay() {
+            document.getElementById("account-btn").style.display = "block";
+            document.getElementById("login-btn").style.display = "none";
+        }
+        var params = {};
+        location.search.slice(1).split("&").forEach(function(pair) {
+            pair = pair.split("=");
+            params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
+            console.log(params)
+        });
+        renderPostAndComments(params.id)
+
+    });
+
+
+    function getPostById(postId) {
+        return posts.find(post => post.id === parseInt(postId));
+    }
+
+    async function renderPostAndComments(ID) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "../src/Foorum/getPost.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                console.log(this.responseText)
+                const post = JSON.parse(this.responseText)[0];
+                console.log(post)
+                if (post) {
+                    const overlay = document.getElementById("overlay")
+                    overlay.innerHTML = `
+                    <h1>${post.Pealkiri}</h1><br>
+                    <p>${post.Tekst}</p><br>
+                    <img src="${post.Pilt}" alt="Post Image" style="max-width: 100%;"><br>
+                    <h2>Comments</h2><br>
+                    <textarea id="comment-content"></textarea>
+                    <button onclick="submitComment(${post.Foorum_ID})">Submit Comment</button>
+                    <ul id="comments-list"></ul>
+                `;
+
+                    handleComments(ID)
+
+                }
+
+            }
+        };
+        xhr.send("PostID=" + encodeURIComponent(ID));
+
+    }
+    async function handleComments(ID){
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "../src/Foorum/getComments.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                const commentsList = document.getElementById("comments-list");
+                const comments = JSON.parse(this.responseText)
+                if (comments) {
+                    comments.forEach(comment => {
+                        const commentItem = document.createElement("li");
+                        commentItem.style ="border:solid 1px; border-radius:10px;margin:5px"
+                        commentItem.innerHTML = `
+                                <div display:flex><h3 style="margin:5px">${comment.Nimi}</h3> <p style="margin:5px;right:0px;">${comment.Vastuse_Aeg}</p></div>
+                                <p style="margin:5px">${comment.Vastus}</p>
+                                `;
+                        commentsList.appendChild(commentItem);
+                    });
+                }
+            }
+
+        };
+        xhr.send("PostID=" + encodeURIComponent(ID));
+    }
+    function submitComment(postId) {
+        const commentContent = document.getElementById("comment-content").value;
+        console.log(postId)
+
+        if (commentContent) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "../src/Foorum/newComment.php", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    console.log(this.responseText)
+                }
+            };
+            xhr.send("vastus=" + encodeURIComponent(commentContent) + "&postId=" + encodeURIComponent(postId));
+            renderPostAndComments(postId);
+
+        } else {
+            alert("Please enter a comment.");
+        }
+    }
+</script>
+</body>
+</html>
