@@ -8,7 +8,6 @@
     <meta http-equiv="Expires" content="0" />
     <title>Voco Liikumine</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
     <style>
         body {
             margin: 0;
@@ -45,18 +44,24 @@
         .second-nav .logo img {
             width: 100%;
             max-width: 200px;
+            background-color:black;
+            border-radius: 10px;
+            padding: 5px 10px;
+            margin: 0 15px;
+            transition: background-color 0.3s ease;
         }
 
         .second-nav .logo:hover img {
             filter: invert(1);
+            transition: filter 0.3s ease;
         }
 
-        .second-nav div {
+        #second-nav{
             display: flex;
             margin-right: 100px;
         }
 
-        .second-nav a {
+        .secondNavBarButtons {
             color: #fff;
             text-decoration: none;
             margin: 0 15px;
@@ -67,7 +72,8 @@
             padding: 5px 10px;
         }
 
-        .second-nav a::before {
+
+        .secondNavBarButtons::before {
             content: "";
             position: absolute;
             top: 0;
@@ -80,12 +86,12 @@
             transition: background-color 0.3s ease;
         }
 
-        .second-nav a:hover {
+        .secondNavBarButtons:hover {
             color: #000;
             background: white;
         }
 
-        .second-nav a:hover::before {
+        .secondNavBarButtons:hover::before {
             background-color: #fff;
         }
 
@@ -100,7 +106,7 @@
         }
 
         .first-nav a {
-            color: #333; /* Change text color as needed */
+            color: white;
             text-decoration: none;
             margin: 0 15px;
             font-size: 18px;
@@ -121,18 +127,13 @@
             border-radius: 5px;
         }
 
-        .login-btn {
+        .login-btn{
             background-color: black; /* Change color as needed */
             color: #fff;
-            border: none;
             padding: 8px 15px;
             border-radius: 5px;
             cursor: pointer;
             margin-right: 100px; /* Added margin-right */
-        }
-
-        .login-btn i {
-            margin-left:4px;
         }
 
 
@@ -161,6 +162,98 @@
             background: black;
 
         }
+        .account-btn{
+            background-color: black; /* Change color as needed */
+            padding: 8px 15px;
+            border-radius: 5px;
+            margin-right: 100px; /* Added margin-right */
+            border:solid 1px;
+        }
+        .account-btn t{margin-right:4px;}
+        .account-btn:hover{
+            background-color:white;
+            color:black;
+        }
+        #accountArrow{
+            transform: rotate(180deg);
+            transition: opacity 0.5s ease
+        }
+        #account-btn:hover #accountArrow{
+            transform: rotate(90deg);
+            transition: opacity 0.5s ease
+        }
+        #account-btn ul{
+            position: absolute;
+            width: 200px;
+            display: none;
+            margin: 0;
+            padding: 0;
+            top:49px;
+        }
+        #account-btn:hover ul{
+            display:block;
+            z-index:500;
+        }
+        #account-btn ul li a {
+            display:block !important;
+            text-decoration: none;
+            color: black;
+            font-size: 18px;
+            padding: 10px;
+            background-color:white;
+            border:solid 1px;ƒ
+        }
+        #account-btn ul li:hover a {
+            color: white;
+            background-color:black;
+        }
+
+        #artiklid{
+            text-decoration: none;
+            color: white;
+        }
+
+        #artikli-btn div{
+            position: absolute;
+            display: none;
+            margin: 0;
+            padding: 0;
+            top:34px;
+            left:0px;
+        }
+
+        #artikli-btn:hover div {
+            display: block;
+            z-index: 500;
+        }
+        #artikli-btn:hover a{
+            color:black;
+            transition: color 0.3s ease;
+        }
+        #artikliArrow{
+            transform: rotate(180deg);
+            transition: opacity 0.5s ease
+        }
+        #artikli-btn:hover #artikliArrow{
+            transform: rotate(90deg);
+            transition: opacity 0.5s ease
+        }
+        #artikli-btn div a{
+            display:block !important;
+            text-decoration: none;
+            color: black;
+            font-size: 16px;
+            padding: 7px 5px;
+            background-color:white;
+            border:solid 1px;
+            border-radius:10px;
+        }
+        #artikli-btn div li:hover a {
+            color: white;
+            background-color:black;
+            transition: color 0.3s ease;
+            transition: background-color 0.3s ease;
+        }
 
         /* Login popup */
 
@@ -170,17 +263,19 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background-color: rgba(0, 0, 0, 0.8); /* Adjust transparency */
             z-index: 1000;
+            border-color:black;
+            border-style: solid;
+            border-radius: 10px;
+
         }
 
         .login-popup-content, .registration-popup-content {
-            background-color: #fff;
+            background-color: white;
             padding: 20px;
-            border-radius: 10px;
+            border-radius: 7px;
             position: relative;
             max-width: 400px; /* Adjust as needed */
-            width: 80%; /* Adjust as needed */
             text-align: center;
         }
 
@@ -197,7 +292,7 @@
         }
 
         .login-popup-content form, .registration-popup-content form {
-            margin-top: 20px;
+            margin-top: 10px;
         }
 
         .login-popup-content label, .registration-popup-content label {
@@ -218,6 +313,7 @@
             background-color: #007bff;
             color: #fff;
             border: none;
+            margin-top:10px;
             padding: 10px 20px;
             border-radius: 5px;
             cursor: pointer;
@@ -233,6 +329,7 @@
             color: #333;
         }
 
+
         .popup-link {
             color: #007bff;
             text-decoration: none;
@@ -243,29 +340,6 @@
             text-decoration: underline;
         }
 
-        .additionalButtonsDiv {
-            position: absolute;
-            border: 1px solid #ccc;
-
-            z-index: 999; /* Ensure it's on top */
-            display: none; /* Initially hidden */
-        }
-        .additionalButtons {
-            background: white;
-            padding: 5px;
-        }.additionalButtons a{
-             color: black;
-             font-size:15px;
-
-         }
-        .additionalButtons:hover{
-            background: black;
-            padding: 5px;
-            cursor: pointer;
-        }
-        .additionalButtons:hover a{
-            color: WHITE; /* Change icon color as needed */
-        }
 
         @media only screen and (max-width: 990px) {
             .second-nav {
@@ -283,7 +357,7 @@
                 margin-bottom: 10px; /* Add margin to both logo and togglebtn */
             }
 
-            .second-nav div {
+            .second-nav #second-nav {
                 margin-top: 10px;
                 margin-right: 0;
                 width: max-content;
@@ -297,8 +371,7 @@
             }
 
             .social-icons,
-            .search-bar,
-            .login-btn {
+            .search-login-icons{
                 display: none;
             }
 
@@ -331,7 +404,8 @@
 
             .social-icons,
             .search-bar,
-            .login-btn {
+            .login-btn,
+            .account-btn{
                 display: flex;
             }
 
@@ -360,30 +434,38 @@
             <div>
                 <input class="search-bar" type="text" placeholder="Otsi...">
             </div>
-            <button id="login-btn" class="login-btn" onclick="openLoginPopup()" >Login</button>
+            <button id="login-btn" class="login-btn" onclick="openLoginPopup()">Login</button>
 
 
 
             <div id="account-btn" style="display: none;">
-                <button class="login-btn" onclick="togglelisakonto_btn()"><t id="nimi">Konto nimi</t><i id="accountArrow" class="fa-solid fa-arrow-right" style="transform: rotate(180deg); transition: opacity 0.3s ease" aria-hidden="true"></i></button>
-                <div id="additionalButtons" class="additionalButtonsDiv" style="display:none">
-                    <li class="additionalButtons"><a onclick="navigateToAccountPage()">Minu Konto</a></li>
+                <a class="account-btn" onclick="togglelisakonto_btn()"><t id="nimi">Konto nimi</t><i id="accountArrow" class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+                <ul>
+                    <li><a onclick="navigateToAccountPage()">Minu Konto</a></li>
 
-                    <li class="additionalButtons"><a onclick="logoutUser()">Logi V채lja</a></li>
-                </div>
+                    <li><a onclick="logoutUser()">Logi Välja</a></li>
+
+                </ul>
             </div>
         </div>
 
     </nav>
     <!-- Second Navbar -->
     <nav class="second-nav">
-        <a href="../" class="logo"><img src="../images/logo.png" alt="Your Logo"></a>
-        <div>
-            <a href="../artiklid">Artiklid</a>
-            <a href="../uudised">Uudised</a>
-            <a href="../trennid">Trennid</a>
-            <a href="../galerii">Galerii</a>
-            <a href="../kontakt">Kontakt</a>
+        <a href="https://lumisteviktor.ikt.khk.ee/liikumine_demo/" class="logo"><img src="https://lumisteviktor.ikt.khk.ee/liikumine_demo/images/logo.png" alt="Your Logo"></a>
+        <div id="second-nav">
+            <a class="secondNavBarButtons" href="https://lumisteviktor.ikt.khk.ee/liikumine_demo/trennid">Trennid</a>
+            <a class="secondNavBarButtons" href="https://lumisteviktor.ikt.khk.ee/liikumine_demo/foorum">Foorum</a>
+            <!-- artiklid uudised s체ndmused-->
+            <div class="secondNavBarButtons" id="artikli-btn">
+                <a id="artiklid" href="https://lumisteviktor.ikt.khk.ee/liikumine_demo/artiklid">Artilkid<i id="artikliArrow" class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+                <div id="additionalButtons">
+                    <li><a href="https://lumisteviktor.ikt.khk.ee/liikumine_demo/sundmused">Sündmused</a></li>
+                    <li><a href="https://lumisteviktor.ikt.khk.ee/liikumine_demo/uudised">Uudised</a></li>
+                </div>
+            </div>
+            <a class="secondNavBarButtons" href="https://lumisteviktor.ikt.khk.ee/liikumine_demo/galerii">Galerii</a>
+            <a class="secondNavBarButtons" href="https://lumisteviktor.ikt.khk.ee/liikumine_demo/kontakt">Kontakt</a>
         </div>
     </nav>
 
@@ -392,7 +474,7 @@
 
 
 <!-- Login Pop-up Box -->
-<div class="login-popup" id="loginPopup">
+<div class="login-popup" id="loginPopup" style="display: none;">
     <div class="login-popup-content">
         <span class="close-popup" onclick="closeLoginPopup()">&times;</span>
 
@@ -407,9 +489,6 @@
 
             <a href="#" style="color: blue;">Forgot your password?</a><br>
             <button type="submit">Login</button>
-            <br>
-            <p id="loginMessage"></p>
-            <br>
 
             <p style="text-align: center; margin-top: 10px;">Need an account? <a href="#" style="color: blue" onclick="openRegistrationPopup()" ;>Sign
                 up</a></p>
@@ -461,8 +540,13 @@
     });
     //Login form popup hide and show
     function openLoginPopup() {
-        loginPopup.style.display = "flex";
-        registrationPopup.style.display = "none"
+        if (loginPopup.style.display === "none"){
+            loginPopup.style.display = "flex";
+            registrationPopup.style.display = "none"
+        } else{
+            loginPopup.style.display = "none";
+            registrationPopup.style.display = "none"
+        }
     }
 
     function closeLoginPopup() {
@@ -491,16 +575,16 @@
     }
     //Login button ja account button display switch
     function loginButtonDisplay(){
-        document.getElementById("login-btn").style.display = "block";
+        document.getElementById("login-btn").style.display = "flex";
         document.getElementById("account-btn").style.display = "none";
     }
     function accountButtonDisplay(){
-        document.getElementById("account-btn").style.display = "block";
+        document.getElementById("account-btn").style.display = "flex";
         document.getElementById("login-btn").style.display = "none";
     }
     function logOut(){
         var xhr = new XMLHttpRequest();
-        xhr.open("POST", "../src/Kasutaja/logout.php", true);
+        xhr.open("POST", "https://lumisteviktor.ikt.khk.ee/liikumine_demo/src/Kasutaja/logout.php", true);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
@@ -535,14 +619,17 @@
         await deleteAllCookies();
         loginButtonDisplay()
         logOut()
-        window.location.href = "https://lumisteviktor.ikt.khk.ee/test/Viktor_liikumine_demo/";
+        window.location.href = "https://lumisteviktor.ikt.khk.ee/liikumine_demo/";
         console.log('All good')
 
     }
 
     function navigateToAccountPage() {
-        if (window.location.pathname == '/test/Viktor_liikumine_demo/account/'){
+        console.log(window.location.pathname)
+        if (window.location.pathname === '/liikumine_demo/account/'){
             window.location.href = ''
+        } else if(window.location.pathname === '/liikumine_demo/'){
+            window.location.href = './account'
         } else {
             window.location.href = '../account'
         }
@@ -556,29 +643,32 @@
         var regEmail = document.getElementById("regEmail").value;
         var regPassword = document.getElementById("regPassword").value;
         var regPhone = document.getElementById("regPhone").value;
-
-        // Make an AJAX request to your PHP registration script
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "../src/Kasutaja/register.php", true);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    // Registration successful
-                    // Optionally, you can handle the response from the server
-                    document.getElementById("registerMessage").innerHTML = "Registration successful!";
-                } else {
-                    // Registration failed
-                    // Optionally, you can handle the response from the server
-                    document.getElementById("registerMessage").innerHTML = "Registration failed. Please try again.";
+        if(regName && regEmail && regPassword){
+            // Make an AJAX request to your PHP registration script
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "https://lumisteviktor.ikt.khk.ee/liikumine_demo/src/Kasutaja/register.php", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        // Registration successful
+                        // Optionally, you can handle the response from the server
+                        document.getElementById("registerMessage").innerHTML = xhr.responseText
+                    } else {
+                        // Registration failed
+                        // Optionally, you can handle the response from the server
+                        document.getElementById("registerMessage").innerHTML = "Registration failed. Please try again.";
+                    }
                 }
-            }
-        };
+            };
 
-        xhr.send("regName=" + encodeURIComponent(regName) +
-            "&regEmail=" + encodeURIComponent(regEmail) +
-            "&regPassword=" + encodeURIComponent(regPassword) +
-            "&regPhone=" + encodeURIComponent(regPhone));
+            xhr.send("regName=" + encodeURIComponent(regName) +
+                "&regEmail=" + encodeURIComponent(regEmail) +
+                "&regPassword=" + encodeURIComponent(regPassword) +
+                "&regPhone=" + encodeURIComponent(regPhone));
+        } else {
+            alert("Täitke tõik väljad!")
+        }
     }
 
     function openRegistrationPopup() {
@@ -608,7 +698,7 @@
     function setCookie(cookie_name){
         // Make an AJAX request to your PHP script
         var xhr = new XMLHttpRequest();
-        xhr.open("POST", "../src/Kasutaja/session.php", true);
+        xhr.open("POST", "https://lumisteviktor.ikt.khk.ee/liikumine_demo/src/Kasutaja/session.php", true);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
@@ -636,7 +726,7 @@
 
         // Make an AJAX request to your PHP script
         var xhr = new XMLHttpRequest();
-        xhr.open("POST", "../src/Kasutaja/login.php", true);
+        xhr.open("POST", "https://lumisteviktor.ikt.khk.ee/liikumine_demo/src/Kasutaja/login.php", true);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
