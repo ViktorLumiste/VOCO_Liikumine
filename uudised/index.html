@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Voco Liikumine</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
-    <script src="../jquery.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script>
 
         $(function(){
@@ -16,6 +15,31 @@
 
     </script>
     <style>
+        #newsDisplay {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center; /* Horizontally center the items */
+            align-items: center; /* Vertically center the items */
+            height: 100vh; /* Set height to viewport height for vertical centering */
+        }
+
+        .news-card {
+            height: 400px;
+            min-height: 300px;
+            width: 400px;
+            min-width: 300px;
+            border: 1px solid;
+            margin: 10px; /* Add margin for spacing between cards */
+        }
+        img{
+            max-width:300px;
+            max-height:200px;
+        }
+        button{
+            position:relative;
+            bottom: 0;
+            right: 0;
+        }
     </style>
 </head>
 <body>
@@ -23,7 +47,7 @@
 <div id="includeNavBar"></div>
 
 <!-- Your page content goes here -->
-<a id="newNews" href="lisa.html">Lisa uus Uudis</a>
+<a id="newNews" href="lisa.html" style="display:none;">Lisa uus Uudis</a>
 <!-- Your page content ends here -->
 <div id="newsDisplay">
 
@@ -38,8 +62,8 @@
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-                if(readCookie("role") !== "t"){
-                    document.getElementById("newNews").style.display = "none";
+                if(readCookie("role") == "t"){
+                    document.getElementById("newNews").style.display = "block";
                 }
 
                 document.getElementById("newsDisplay").innerHTML = this.responseText;
