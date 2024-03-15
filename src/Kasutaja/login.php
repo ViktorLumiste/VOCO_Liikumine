@@ -12,15 +12,15 @@ $password = $_POST['loginPassword'];
 $sql = "SELECT Parool,Nimi,Pilt, roll FROM KASUTAJAD WHERE Email='$email'";
 $result = $conn->query($sql);
 if ($result !== false && $result->num_rows > 0) {
-// Get the password from the db
+    // Get the password from the db
     $results = mysqli_fetch_assoc($result);
     $resultstring = $results['Parool'];
-// Unhash the password
+    // Unhash the password
     $unhashed = password_verify($password, $resultstring);
     $username = $results['Nimi'] ;
     $pfp = $results['Pilt'] ;
     $role = $results['roll'];
-// Check if the query was successful
+    // Check if the query was successful
     if ($unhashed) {
         // Start PHP session
         session_start();
@@ -40,6 +40,7 @@ if ($result !== false && $result->num_rows > 0) {
         echo "Login failed. Invalid email or password.";
     }
 } else {
+    http_response_code(401); // Unauthorized
     echo "Incorrect password or email.";
 }
 // Close the database connection
