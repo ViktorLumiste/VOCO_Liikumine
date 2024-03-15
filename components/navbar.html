@@ -17,7 +17,9 @@
         li{
             list-style-type: none
         }
-
+        #menutogglebtn{
+            background-color:black;
+        }
         /* Container for the navbars */
         .navbars-container {
             display: flex;
@@ -26,12 +28,14 @@
 
         /* First Navbar */
         .second-nav {
+
             background-color: #000;
             color: #fff;
             padding: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+
         }
 
         .second-nav .logo {
@@ -108,7 +112,6 @@
         .first-nav a {
             color: white;
             text-decoration: none;
-            margin: 0 15px;
             font-size: 18px;
         }
 
@@ -184,7 +187,7 @@
         }
         #account-btn ul{
             position: absolute;
-            width: 200px;
+            width: 150px;
             display: none;
             margin: 0;
             padding: 0;
@@ -199,7 +202,7 @@
             text-decoration: none;
             color: black;
             font-size: 18px;
-            padding: 10px;
+            padding: 8px 15px;
             background-color:white;
             border:solid 1px;ƒ
         }
@@ -351,8 +354,13 @@
                 margin-bottom: 10px;
                 left: -20px;
             }
-
-            .second-nav .logo,
+            .second-nav .logo {
+                color: #fff;
+                text-decoration: none;
+                font-size: 24px;
+                margin-left:0px;
+                margin-bottom: 10px; /* Add margin to both logo and togglebtn */
+            }
             .second-nav .togglebtn {
                 margin-bottom: 10px; /* Add margin to both logo and togglebtn */
             }
@@ -391,6 +399,10 @@
                 color: black;
                 background: white;
             }
+            .first-nav{
+
+                padding: 0;
+            }
         }
 
         @media only screen and (min-width: 991px) {
@@ -412,6 +424,7 @@
             .togglebtn {
                 display: none;
             }
+
         }
 
 
@@ -426,10 +439,12 @@
     <!-- First Navbar -->
     <nav class="first-nav">
         <div class="social-icons">
-            <i class="fab fa-facebook"></i>
-            <i class="fab fa-tiktok"></i>
-            <i class="fab fa-instagram"></i>
+            <a href="https://www.facebook.com/tartuvoco/" target="_blank"><i class="fab fa-facebook"></i></a>
+            <a href="https://www.tiktok.com/@tartuvoco?lang=en" target="_blank"><i class="fab fa-tiktok"></i></a>
+            <a href="https://www.instagram.com/tartuvoco/?hl=en" target="_blank"><i class="fab fa-instagram"></i></a>
         </div>
+
+
         <div class="search-login-icons">
             <div>
                 <input class="search-bar" type="text" placeholder="Otsi...">
@@ -439,10 +454,10 @@
 
 
             <div id="account-btn" style="display: none;">
-                <a class="account-btn" onclick="togglelisakonto_btn()"><t id="nimi">Konto nimi</t><i id="accountArrow" class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+                <a class="account-btn"><t id="nimi">Konto nimi</t><i id="accountArrow" class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
                 <ul>
                     <li><a onclick="navigateToAccountPage()">Minu Konto</a></li>
-
+                    <li><a href="https://lumisteviktor.ikt.khk.ee/liikumine_demo/minutrennid">Minu Trennid</a></li>
                     <li><a onclick="logoutUser()">Logi Välja</a></li>
 
                 </ul>
@@ -458,7 +473,7 @@
             <a class="secondNavBarButtons" href="https://lumisteviktor.ikt.khk.ee/liikumine_demo/foorum">Foorum</a>
             <!-- artiklid uudised s체ndmused-->
             <div class="secondNavBarButtons" id="artikli-btn">
-                <a id="artiklid" href="https://lumisteviktor.ikt.khk.ee/liikumine_demo/artiklid">Artilkid<i id="artikliArrow" class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+                <a id="artiklid" href="https://lumisteviktor.ikt.khk.ee/liikumine_demo/artiklid">Artilkid <i id="artikliArrow" class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
                 <div id="additionalButtons">
                     <li><a href="https://lumisteviktor.ikt.khk.ee/liikumine_demo/sundmused">Sündmused</a></li>
                     <li><a href="https://lumisteviktor.ikt.khk.ee/liikumine_demo/uudised">Uudised</a></li>
@@ -532,7 +547,7 @@
         const toggleBtn = document.querySelector(".togglebtn");
         const secondNav = document.querySelector(".second-nav");
         const loginPopup = document.getElementById("loginPopup");
-        const registrationPopup = document.getElemntById("registrationPopup")
+        const registrationPopup = document.getElementById("registrationPopup")
 
         toggleBtn.addEventListener("click", function () {
             secondNav.classList.toggle("open");
@@ -561,18 +576,7 @@
     function closeRegistrationPopup() {
         registrationPopup.style.display = "none";
     }
-    //Konto button
-    function togglelisakonto_btn() {
-        var additionalButtons = document.getElementById("additionalButtons");
-        var accountArrow = document.getElementById("accountArrow");
-        if (additionalButtons.style.display === "none") {
-            additionalButtons.style.display = "block";
-            accountArrow.style.transform = "rotate(90deg)";
-        } else {
-            additionalButtons.style.display = "none";
-            accountArrow.style.transform = "rotate(180deg)";
-        }
-    }
+
     //Login button ja account button display switch
     function loginButtonDisplay(){
         document.getElementById("login-btn").style.display = "flex";
@@ -705,10 +709,7 @@
                 if (xhr.status === 200) {
                     // Access the Kasutaja_ID property
                     var value = xhr.responseText;
-                    document.cookie = cookie_name + "=" + value;
-                    if (cookie_name==="username"){
-                        document.getElementById('nimi').innerHTML = readCookie("username")
-                    }
+                    document.cookie = cookie_name + "=" + value + ";path=/";
                 } else {
                     console.log('no cookie_name')
                 }
@@ -744,10 +745,9 @@
                     setCookie("pfp")
                     setCookie("role")
 
+
                     accountButtonDisplay()
                     closeLoginPopup()
-
-
                 } else {
                     // Login failed
                     console.log("Login failed. Invalid email or password.");
@@ -758,6 +758,7 @@
 
 
         xhr.send("loginEmail=" + encodeURIComponent(email) + "&loginPassword=" + encodeURIComponent(password));
+
     }
 
 </script>

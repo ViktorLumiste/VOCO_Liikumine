@@ -119,7 +119,7 @@
                     loginButtonDisplay()
                 } else {
                     accountButtonDisplay()
-                    setCookie('username')
+                    document.getElementById('nimi').innerHTML = readCookie("username")
                 }
             } catch (error) {
                 console.error('Error in checkLogStatus:', error);
