@@ -7,6 +7,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <style>
+        body{
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        #includeFooter{
+            margin-top:auto;
+        }
         .Kontakt_container {
             margin: 0;
             padding: 0;
@@ -116,6 +124,7 @@
     <script>
 
         $(function(){
+            $("#includeNavBar").load("../components/navbar.html")
             $("#includeFooter").load("../components/footers.html")
 
         })
@@ -161,7 +170,7 @@
                     loginButtonDisplay()
                 } else {
                     accountButtonDisplay()
-                    setCookie('username')
+                    document.getElementById('nimi').innerHTML = readCookie("username")
                 }
             } catch (error) {
                 console.error('Error in checkLogStatus:', error);
