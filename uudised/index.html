@@ -15,12 +15,19 @@
 
     </script>
     <style>
+        body{
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        #includeFooter{
+            margin-top:auto;
+        }
         #newsDisplay {
             display: flex;
             flex-wrap: wrap;
             justify-content: center; /* Horizontally center the items */
             align-items: center; /* Vertically center the items */
-            height: 100vh; /* Set height to viewport height for vertical centering */
         }
 
         .news-card {
@@ -73,6 +80,9 @@
         xhr.open("GET", "../src/Uudised/get_News.php", true);
         xhr.send();
     })
+    function openNews(newsIndex) {
+        window.location.href = `news.html?id=${newsIndex}`;
+    }
     $(document).ready(function() {
         $("#includeNavBar").load("../components/navbar.html", function () {
             // Callback function - this runs after the content is loaded
@@ -89,7 +99,7 @@
                     loginButtonDisplay()
                 } else {
                     accountButtonDisplay()
-                    setCookie('username')
+                    document.getElementById('nimi').innerHTML = readCookie("username")
                 }
             } catch (error) {
                 console.error('Error in checkLogStatus:', error);

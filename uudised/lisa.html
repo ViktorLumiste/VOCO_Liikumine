@@ -17,9 +17,15 @@
         })
     </script>
     <style>
+        body{
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
 
-        body {
             font-family: Arial, sans-serif;
+        }
+        #includeFooter{
+            margin-top:auto;
         }
         #editableDiv {
             border: 1px solid #ccc;
@@ -525,7 +531,7 @@
                     loginButtonDisplay()
                 } else {
                     accountButtonDisplay()
-                    setCookie('username')
+                    document.getElementById('nimi').innerHTML = readCookie("username")
                 }
             } catch (error) {
                 console.error('Error in checkLogStatus:', error);
