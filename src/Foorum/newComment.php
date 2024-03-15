@@ -7,6 +7,7 @@ require '../Database.php';
 global $conn;
 
 $content = $_POST['vastus'];
+$content = str_replace("'", "\'", $content);
 $PostID = $_POST['postId'];
 
 session_start();

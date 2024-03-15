@@ -8,6 +8,7 @@ global $conn;
 
 $title = $_POST['title'];
 $content = $_POST['content'];
+$content = str_replace("'", "\'", $content);
 $image = $_POST['image'];
 
 session_start();
@@ -19,8 +20,7 @@ $result = $conn->query($sql1);
 if ($result !== false && $result->num_rows > 0) {
     $results = mysqli_fetch_assoc($result);
     $userID = $results['Kasutaja_ID'] ;
-
-    $sql = "INSERT INTO FOORUM (Pealkiri, Tekst, Kasutaja_ID, Public, Pilt)VALUES('$title', '$content', '$userID', 't', '$image');";
+    $sql = "INSERT INTO FOORUM (Pealkiri, Tekst, Kasutaja_ID, Public, Pilt)VALUES('$title', '$content', $userID, 't', '$image');";
 
     if ($conn->query($sql) === TRUE) {
         echo "Post added successfully";

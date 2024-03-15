@@ -15,6 +15,14 @@
 
     </script>
     <style>
+        body{
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        #includeFooter{
+            margin-top:auto;
+        }
         #post-container {
             max-width: 600px;
             margin: 0 auto;
@@ -110,7 +118,7 @@
                     loginButtonDisplay()
                 } else {
                     accountButtonDisplay()
-                    setCookie('username')
+                    document.getElementById('nimi').innerHTML = readCookie("username")
                 }
             } catch (error) {
                 console.error('Error in checkLogStatus:', error);
@@ -241,14 +249,24 @@
 
 
 
-    function submitPost() {
+    async function submitPost() {
         const title = document.getElementById("post-title").value;
         const content = document.getElementById("post-content").value;
         const image = document.getElementById("post-image").value;
+        logStatus = await readCookie("loggedIn");
+        var postURL = ""
+        if (logStatus){
+            var postURL = "../src/Foorum/newPost.php"
+            console.log(postURL)
+
+        } else {
+            var postURL = "../src/Foorum/newGuestPost.php"
+            console.log(postURL)
+        }
 
         if (title && content) {
             var xhr = new XMLHttpRequest();
-            xhr.open("POST", "../src/Foorum/newPost.php", true);
+            xhr.open("POST", postURL, true);
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4) {
