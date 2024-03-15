@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Double Navbar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="stylesheet" href="../style.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+
+        $(function(){
+            $("#includeFooter").load("../components/footers.html")
+
+        })
+
+    </script>
+    <style>
+        body{
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        #includeFooter{
+            margin-top:auto;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            text-align: left;
+            position: relative;
+
+        }
+
+
+        th {
+            background-color: #f2f2f2;
+        }
+        td{
+            height: 400px; /* Increase the default height for each cell */
+            display:flex;
+        }
+
+        .activity {
+            color: white;
+            border-radius: 5px;
+            padding: 3px;
+            z-index: 1;
+            display: flex;
+            position: relative;
+            width: 100%;
+            margin:1px;
+        }
+        .activity p {
+            margin: 0; /* Remove default margins for paragraphs */
+        }
+
+        .activity .activityName {
+            font-weight: bold; /* Make activity name bold */
+            font-size: 16px; /* Adjust font size for activity name */
+            width:max-content;
+        }
+
+        .activity .activityTime {
+            font-size: 14px; /* Adjust font size for activity time */
+        }
+
+        .activity .activityButton {
+            font-size: 14px;
+            margin-top: auto; /* Ensure it takes the bottom space */
+            position: absolute;
+            bottom: 15px; /* Adjust as per your preference */
+            right: 15px; /* Adjust as per your preference */
+        }
+        .hour-marker {
+            position: absolute;
+            width: 100%;
+            height: 1px;
+            background-color: #ddd;
+            z-index: 0; /* Ensure time markers appear below activities */
+            left: 0; /* Ensure the hour-marker starts from the left edge */
+        }
+        .catalogue-filters {
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        @media only screen and (max-width: 991px) {
+            .table-container {
+                display: column;
+            }
+            table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+        }
+        @media only screen and (min-width: 991px) {
+            .table-container {
+                display: flex;
+            }
+            table {
+                border-collapse: collapse;
+                width: 20%;
+            }
+        }
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index:999;
+        }
+        .popup {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+
+        }
+
+
+
+    </style>
+</head>
+<body>
+
+
+<div id="includeNavBar"></div>
+
+
+<!-- schedule-->
+<div class="navigation">
+    <button id="prevWeek">&lt;&lt; Previous Week</button>
+    <t id="startDate"></t> <t>-</t> <t id="endDate"></t>
+    <button id="nextWeek">Next Week &gt;&gt;</button>
+</div>
+<!-- Your page content goes here -->
+<!--<div style="display:flex ">-->
+<!-- Filter dropdown -->
+<label for="activityFilter">Trenn:</label>
+<select id="activityFilter">
+    <option value="">All</option>
+    <!-- Options will be dynamically generated here -->
+</select>
+<label for="placeFilter">Asukoht:</label>
+<select id="placeFilter">
+    <!-- Options will be dynamically generated here -->
+</select>
+<label for="targetFilter">Kellele:</label>
+<select id="targetFilter">
+    <option value="">All</option>
+    <!-- Options will be dynamically generated here -->
+</select>
+<!--Table-->
+<div id="scheduleBody" class="table-container">
+
+</div>
+
+<!--</div>-->
+
+<!-- Your page content ends here -->
+
+
+
+<div id="includeFooter"></div>
+
+
+
+
+
+<script src="https://kit.fontawesome.com/9616f6d837.js" crossorigin="anonymous"></script>
+<script>
+    var activityOptions = []
+    document.addEventListener("DOMContentLoaded", function() {
+        // Get all dropdown headers
+        var dropdownHeaders = document.querySelectorAll('.dropdown-header');
+
+        // Loop through each dropdown header
+        dropdownHeaders.forEach(function(header) {
+            // Add click event listener to each header
+            header.addEventListener('click', function() {
+                // Get the next sibling, which is the dropdown body
+                var dropdownBody = this.nextElementSibling;
+
+                // Toggle the max-height of the dropdown body to show/hide it
+                if (dropdownBody.style.maxHeight) {
+                    dropdownBody.style.maxHeight = null;
+                } else {
+                    dropdownBody.style.maxHeight = dropdownBody.scrollHeight + "px";
+                }
+
+                // Toggle a class to indicate whether the dropdown is open or closed
+                this.parentElement.classList.toggle('-open');
+            });
+        });
+    });
+    function openNewActivity(){
+        document.getElementById('popupOverlay').style.display = 'flex';
+    }
+    function closePopup() {
+        document.getElementById('popupOverlay').style.display = 'none';
+
+
+    }
+    function bodyOverflow(){
+        document.body.style = 'overflow: auto'
+    }
+    function getWeek(){
+        currentDate = new Date();
+        startDate = new Date(currentDate.getFullYear(), 0, 1);
+        let days = Math.ceil((currentDate - startDate) /
+            (24 * 60 * 60 * 1000));
+
+        let weekNumber = Math.ceil(days / 7);
+        console.log(weekNumber)
+        return weekNumber
+    }
+    var weekNumber = getWeek()
+    function getSchedule(weekNum){
+        fetch('../src/MinuTrenn/get_schedule.php', {
+            method: 'POST', // Specify the HTTP method
+            headers: {
+                'Content-Type': 'application/json', // Specify the content type
+            },
+            body: JSON.stringify({ weekNum:weekNum }), // Convert your data to JSON format
+        })
+            .then(response => response.json())
+            .then(data => {
+                const scheduleBody = document.getElementById('scheduleBody');
+                const activityDropdown = document.getElementById('activityFilter');
+                const placeDropdown = document.getElementById('placeFilter');
+                const targetDropdown = document.getElementById('targetFilter');
+                const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+                const activityNames = [];
+                const placeNames = [];
+                const targetNames = [];
+
+                // Iterate through data to gather activity names
+                daysOfWeek.forEach(day => {
+                    const activities = data[day];
+                    activities.forEach(activity => {
+                        if (!activityNames.includes(activity.activityName)) {
+                            activityNames.push(activity.activityName);
+                        }
+                    });
+                });
+                daysOfWeek.forEach(day => {
+                    const places = data[day];
+                    places.forEach(place => {
+                        if (!placeNames.includes(place.placeName)) {
+                            placeNames.push(place.placeName);
+                        }
+                    });
+                });
+                daysOfWeek.forEach(day => {
+                    const targets = data[day];
+                    targets.forEach(target => {
+                        if (!targetNames.includes(target.targetName)) {
+                            targetNames.push(target.targetName);
+                        }
+                    });
+                });
+
+                // Dynamically generate dropdown options
+                activityNames.forEach(activityName => {
+                    const option = document.createElement('option');
+                    option.value = activityName;
+                    option.textContent = activityName;
+                    activityFilter.appendChild(option);
+                });
+                placeNames.forEach(placeName => {
+                    const option = document.createElement('option');
+                    option.value = placeName;
+                    option.textContent = placeName;
+                    placeFilter.appendChild(option);
+                });
+                targetNames.forEach(targetName => {
+                    const option = document.createElement('option');
+                    option.value = targetName;
+                    option.textContent = targetName;
+                    targetFilter.appendChild(option);
+                });
+
+                // Display schedule based on filter
+                displaySchedule(data);
+
+                // Filter activities based on selected option
+                activityDropdown.addEventListener('change', function() {
+                    displaySchedule(data);
+                });
+                placeDropdown.addEventListener('change', function() {
+                    displaySchedule(data);
+                });
+                targetDropdown.addEventListener('change', function() {
+                    displaySchedule(data);
+                });
+            })
+            .catch(error => console.error('Error fetching schedule data:', error));
+    }
+
+    function changeWeek(weekNum){
+        fetch('../src/MinuTrenn/get_schedule.php', {
+            method: 'POST', // Specify the HTTP method
+            headers: {
+                'Content-Type': 'application/json', // Specify the content type
+            },
+            body: JSON.stringify({ weekNum:weekNum }), // Convert your data to JSON format
+        })
+            .then(response => response.json())
+            .then(data => {
+                const scheduleBody = document.getElementById('scheduleBody');
+                const activityDropdown = document.getElementById('activityFilter');
+                const placeDropdown = document.getElementById('placeFilter');
+                const targetDropdown = document.getElementById('targetFilter');
+
+                activityDropdown.options.length = 1
+                placeDropdown.options.length = 1
+                targetDropdown.options.length = 1
+
+                const activityNames = [];
+                const placeNames = [];
+                const targetNames = [];
+                const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+
+                // Iterate through data to gather activity names
+                daysOfWeek.forEach(day => {
+                    const activities = data[day];
+                    activities.forEach(activity => {
+                        if (!activityNames.includes(activity.activityName)) {
+                            activityNames.push(activity.activityName);
+                        }
+                    });
+                });
+
+                daysOfWeek.forEach(day => {
+                    const places = data[day];
+                    places.forEach(place => {
+                        if (!placeNames.includes(place.placeName)) {
+                            placeNames.push(place.placeName);
+                        }
+                    });
+                });
+                daysOfWeek.forEach(day => {
+                    const targets = data[day];
+                    targets.forEach(target => {
+                        if (!targetNames.includes(target.targetName)) {
+                            targetNames.push(target.targetName);
+                        }
+                    });
+                });
+
+                // Dynamically generate dropdown options
+                activityNames.forEach(activityName => {
+                    const option = document.createElement('option');
+                    option.value = activityName;
+                    option.textContent = activityName;
+                    activityFilter.appendChild(option);
+                });
+                placeNames.forEach(placeName => {
+                    const option = document.createElement('option');
+                    option.value = placeName;
+                    option.textContent = placeName;
+                    placeFilter.appendChild(option);
+                });
+                targetNames.forEach(targetName => {
+                    const option = document.createElement('option');
+                    option.value = targetName;
+                    option.textContent = targetName;
+                    targetFilter.appendChild(option);
+                });
+
+                // Display schedule based on filter
+                displaySchedule(data);
+
+                // Filter activities based on selected option
+                activityDropdown.addEventListener('change', function() {
+                    displaySchedule(data);
+                });
+                placeDropdown.addEventListener('change', function() {
+                    displaySchedule(data);
+                });
+                targetDropdown.addEventListener('change', function() {
+                    displaySchedule(data);
+                });
+            })
+            .catch(error => console.error('Error fetching schedule data:', error));
+    }
+
+    // Navigate to previous week
+    document.getElementById('prevWeek').addEventListener('click', function() {
+        // Adjust date or fetch previous week data and update schedule
+        weekNumber --
+        changeWeek(weekNumber)
+        document.getElementById("startDate").innerHTML = getStartOfWeek(weekNumber, 2024).toLocaleDateString();
+        document.getElementById("endDate").innerHTML = getEndOfWeek(weekNumber,2024).toLocaleDateString();
+        console.log('Navigating to previous week');
+    });
+
+    // Navigate to next week
+    document.getElementById('nextWeek').addEventListener('click', function() {
+        // Adjust date or fetch next week data and update schedule
+        weekNumber ++
+        changeWeek(weekNumber)
+        document.getElementById("startDate").innerHTML = getStartOfWeek(weekNumber, 2024).toLocaleDateString();
+        document.getElementById("endDate").innerHTML = getEndOfWeek(weekNumber,2024).toLocaleDateString();
+        console.log('Navigating to next week');
+    });
+    function getStartOfWeek(w, y) {
+        var d = (1 + (w - 1) * 7); // 1st of January + 7 days for each week
+
+        return new Date(Date.UTC(y, 0, d));
+    }
+    function getEndOfWeek(w, y) {
+        var d = (1 + (w - 1) * 7)+6; // 1st of January + 7 days for each week
+
+        return new Date(Date.UTC(y, 0, d));
+    }
+
+    // Function to display schedule based on filter
+    function displaySchedule(data) {
+        const scheduleBody = document.getElementById('scheduleBody');
+        const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+        const selectedFilter = document.getElementById('activityFilter').value;
+        const selectedPlace = document.getElementById('placeFilter').value;
+        const selectedTarget = document.getElementById('targetFilter').value;
+
+        // Clear existing schedule
+        scheduleBody.innerHTML = '';
+
+        daysOfWeek.forEach(day => {
+            const activities = data[day];
+            const day1Column = document.createElement('table');
+
+            const dayoftheweek = document.createElement('th');
+            dayoftheweek.innerHTML = `${day}`;
+            dayoftheweek.className = 'day-of-the-week';
+            day1Column.appendChild(dayoftheweek);
+
+            const dayColumntr = document.createElement('tr');
+            const dayColumn = document.createElement('td');
+            dayColumntr.appendChild(dayColumn);
+
+            const timeSlots = {}; // Store occupied time slots for each day
+
+            activities.forEach(activity => {
+                const activityPopup = document.createElement('div');
+                activityPopup.id = 'overlay';
+                activityPopup.style = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60%; max-width: 600px; background: #fff; box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); z-index: 999; display: none; padding:30px;';
+                activityPopup.className = 'popup';
+                activityPopup.innerHTML = `
+                <div class="popup-titlebar">
+                    <h2>${activity.activityName}</h2>
+
+                </div>
+                <div class="popup-content" style="color:black;">
+                    <p style="color:black;"><strong>Kell:</strong> ${activity.start_time} - ${activity.end_time}</p>
+                    <p style="color:black;"><strong>Koht:</strong> ${activity.placeName}</p>
+                    <p style="color:black;"><strong>Asukoht:</strong> ${activity.targetName}</p>
+                    <p style="color:black; flex:right" class="activityPpl"><strong>Osalejate arv:</strong>${activity.Cur_Ppl}/${activity.Max_Ppl}</p>
+                    <p style="color:black;">${activity.Description}</p>
+                    <!-- Add more information as needed -->
+                    <div style="display:flex;right: 0px;bottom: 20px;position: absolute;margin-right: 20px;" >
+                        <button onclick="this.parentElement.parentElement.parentElement.style.display = 'none';bodyOverflow()" style="margin-right: 10px;">Close</button>
+                    </div>
+                </div>
+            `;
+
+                document.body.appendChild(activityPopup);
+
+                // Add a function to close the popup
+
+
+                // Apply filters if selected
+                if ((selectedFilter === '' || activity.activityName === selectedFilter) &&
+                    (selectedPlace === '' || activity.placeName === selectedPlace) &&
+                    (selectedTarget === '' || activity.targetName === selectedTarget)) {
+
+                    const startHour = parseInt(activity.start_time.split(':')[0]);
+                    const startMinute = parseInt(activity.start_time.split(':')[1]);
+                    const endHour = parseInt(activity.end_time.split(':')[0]);
+                    const endMinute = parseInt(activity.end_time.split(':')[1]);
+                    const top = ((startHour - 8) * 60 + startMinute) / 960 * 100; // Calculate top position
+                    const height = ((endHour - startHour) * 60 + endMinute - startMinute) / 960 * 100; // Calculate height
+
+                    // Check for conflicts and adjust position if necessary
+                    let adjustedTop = top;
+                    while (timeSlots[adjustedTop] && timeSlots[adjustedTop] >= startHour) {
+                        adjustedTop += 5; // Increment by 5% until finding a free slot
+                    }
+                    timeSlots[adjustedTop] = endHour;
+
+                    const activityElement = document.createElement('div');
+                    activityElement.className = 'activity';
+
+                    // Adding a click event listener
+                    activityElement.addEventListener('click', function () {
+                        // Toggle the display of the popup
+                        if (activityPopup.style.display === 'none') {
+                            activityPopup.style.display = 'block';
+                            document.body.style = 'overflow: hidden'
+                        }
+                    });
+
+                    activityElement.style.top = `${adjustedTop}%`;
+                    activityElement.style.height = `${height}%`;
+                    switch (activity.activityName) {
+                        case "Vorkpall":
+                            activityElement.style.backgroundColor = "#007bff";
+                            break;
+                        case "Jalgpall":
+                            activityElement.style.backgroundColor = "#008000";
+                            break;
+                        case "Korvpall":
+                            activityElement.style.backgroundColor = "#FFA500";
+                            break;
+                        default:
+                            // Default case if activityName doesn't match any of the specified values
+                            break;
+                    }
+
+
+                    activityElement.innerHTML = `<div><p class="activityName">${activity.activityName}</p>
+                <p class="activityTime">${activity.start_time} - ${activity.end_time}</p></div>
+                <p class="activityPpl">${activity.Cur_Ppl}/${activity.Max_Ppl}</p>
+                <p class="activityButton" onclick=(regToActivity(${activity.ID}))>Registreeri</p>`;
+                    dayColumn.appendChild(activityElement);
+                    dayColumn.appendChild(activityPopup);
+                }
+            });
+
+            // Add hourly markers
+            for (let i = 8; i <= 24; i++) {
+                const hourMarker = document.createElement('div');
+                hourMarker.className = 'hour-marker';
+                const markerTop = ((i - 8) * 60) / 960 * 100; // Calculate top position
+                hourMarker.style.top = `${markerTop}%`;
+                dayColumn.appendChild(hourMarker);
+            }
+            day1Column.appendChild(dayColumntr);
+            scheduleBody.appendChild(day1Column);
+        })
+    }
+
+    window.onload = () => {
+        const options = {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+        };
+        getSchedule(weekNumber)
+        document.getElementById("startDate").innerHTML = getStartOfWeek(weekNumber, 2024).toLocaleDateString();
+        document.getElementById("endDate").innerHTML = getEndOfWeek(weekNumber,2024).toLocaleDateString();
+    };
+    $(document).ready(function() {
+        $("#includeNavBar").load("../components/navbar.html", function () {
+            // Callback function - this runs after the content is loaded
+            checkLogStatus();
+        });
+        async function checkLogStatus() {
+            try {
+                logStatus = await readCookie("loggedIn");
+                console.log('Read cookie result:', logStatus);
+
+                if (!logStatus) {
+                    localStorage.clear();
+                    deleteAllCookies();
+                    loginButtonDisplay()
+                } else {
+                    accountButtonDisplay()
+                    document.getElementById('nimi').innerHTML = readCookie("username")
+                }
+            } catch (error) {
+                console.error('Error in checkLogStatus:', error);
+            }
+        }
+
+        function accountButtonDisplay() {
+            document.getElementById("account-btn").style.display = "block";
+            document.getElementById("login-btn").style.display = "none";
+        }
+    });
+</script>
+</body>
+</html>
