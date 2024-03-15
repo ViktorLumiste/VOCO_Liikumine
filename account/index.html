@@ -21,8 +21,13 @@
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
-
+        #includeFooter{
+            margin-top:auto;
+        }
         .container {
             max-width: 600px;
             margin: 0 auto;
@@ -43,6 +48,25 @@
 
         .settings {
             margin-top: 30px;
+        }
+        .popup {
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
         }
     </style>
 </head>
@@ -66,7 +90,7 @@
 
     <div class="settings">
         <h2>Account Settings</h2>
-        <form onSubmit="editData(event)">
+        <div>
             <div style="display:flex">
                 <div>
                     <label for="newUsername">Change Username:</label><br>
@@ -83,9 +107,16 @@
             </div>
 
             <br>
-
-            <input type="submit" value="Update Profile">
-        </form>
+            <button type="submit" onclick="sendCode()" >Update Profile</button>
+        </div>
+    </div>
+    <div class="overlay" id="overlay">
+        <div class="popup">
+            <h2>Enter 2FA Verification Code</h2>
+            <input type="text" id="VerifiCode" placeholder="Enter code" />
+            <br>
+            <button onclick="editData()">Verify</button>
+        </div>
     </div>
 </div>
 <!-- Your page content ends here -->
@@ -96,7 +127,6 @@
 
 <script src="https://kit.fontawesome.com/9616f6d837.js" crossorigin="anonymous"></script>
 <script>
-
     async function setData(){
         var username = await readCookie('username')
         var email = await readCookie('email')
@@ -108,13 +138,34 @@
         }
     }
 
-    async function editData(e){
-        e.preventDefault();
+    async function editData() {
+        var verification = document.getElementById("VerifiCode").value;
         var newUsername = document.getElementById("newUsername").value;
         var newPassword = document.getElementById("newPassword").value;
         var newEmail = document.getElementById("newEmail").value;
         var newPhone = document.getElementById("newPhone").value;
-        var email = await readCookie('email')
+        var email = await readCookie('email');
+        // Create an object to store the data with non-empty values
+        var dataToUpdate = {};
+        if (newUsername.trim() !== "") {
+            dataToUpdate.username = newUsername;
+        }
+        if (newPassword.trim() !== "") {
+            dataToUpdate.password = newPassword;
+        }
+        if (newEmail.trim() !== "") {
+            dataToUpdate.newemail = newEmail;
+        }
+        if (newPhone.trim() !== "") {
+            dataToUpdate.phone = newPhone;
+        }
+
+        // Check if there's any data to update
+        if (Object.keys(dataToUpdate).length === 0) {
+            console.log('No data to update');
+            return;
+        }
+
         // Make an AJAX request to your PHP script
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "../src/Kasutaja/edit.php", true);
@@ -123,14 +174,43 @@
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     // Access the Kasutaja_ID property
-                    console.log(xhr.responseText)
+                    document.getElementById('overlay').style.display = 'none';
+                    console.log(xhr.responseText);
                 } else {
-                    console.log('not good')
+                    console.log(xhr.responseText);
                 }
-
             }
         };
-        xhr.send("username=" + encodeURIComponent(newUsername) + "&password=" + encodeURIComponent(newPassword)+ "&email=" +encodeURIComponent(email)+ "&newemail=" +encodeURIComponent(newEmail)+ "&phone=" +encodeURIComponent(newPhone));
+
+        // Convert the dataToUpdate object into a URL-encoded string
+        var requestData = Object.keys(dataToUpdate)
+            .map(key => key + '=' + encodeURIComponent(dataToUpdate[key]))
+            .join('&');
+
+        // Include the email in the request data
+        requestData += '&email=' + encodeURIComponent(email) + '&verification=' + encodeURIComponent(verification)+'&email=' + encodeURIComponent(email);
+
+        xhr.send(requestData);
+    }
+
+    async function sendCode(){
+        document.getElementById('overlay').style.display = 'flex';
+        var email = await readCookie('email');
+        // Make an AJAX request to your PHP script
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "../src/Kasutaja/confirm.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    console.log(xhr.responseText);
+                } else {
+                    alert("Proovige uuesti!");
+                }
+            }
+        };
+
+        xhr.send("email=" + encodeURIComponent(email));
     }
     async function uploadImage(){
         var email = await readCookie('email')
@@ -187,8 +267,8 @@
                     loginButtonDisplay()
                 } else {
                     accountButtonDisplay()
-                    setCookie('username')
                     setData()
+                    document.getElementById('nimi').innerHTML = readCookie("username")
                 }
             } catch (error) {
                 console.error('Error in checkLogStatus:', error);
