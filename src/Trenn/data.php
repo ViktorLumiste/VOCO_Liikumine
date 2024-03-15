@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // SQL query to retrieve user data based on start time
     $sql = "SELECT k.Nimi, t.* FROM TRENNID t join KASUTAJAD k on t.Treeneri_ID=k.Kasutaja_ID WHERE t.Algab = '$starttime'";
     $result = $conn->query($sql);
-    
+
     if ($result != false & $result->num_rows > 0) {
         // Display user data if any was found
         echo "<h2>Sports Data:</h2>";
@@ -48,4 +48,3 @@ $conn->close();
     Enter start time: <input type="time" name="starttime">
     <input type="submit" name="submit" value="Submit">
 </form>
-

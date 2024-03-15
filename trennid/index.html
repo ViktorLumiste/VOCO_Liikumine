@@ -16,10 +16,16 @@
 
     </script>
     <style>
-
+        body{
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        #includeFooter{
+            margin-top:auto;
+        }
         th, td {
             border: 1px solid #ddd;
-            padding: 8px;
             text-align: left;
             position: relative;
 
@@ -31,18 +37,18 @@
         }
         td{
             height: 400px; /* Increase the default height for each cell */
+            display:flex;
         }
 
         .activity {
-            position: absolute;
             color: white;
             border-radius: 5px;
             padding: 3px;
-            width: 95%; /* Adjust width to fit within cell */
-            z-index: 1; /* Ensure activities appear above time markers */
-            left:1px;
-            right:1px;
-            display:flex;
+            z-index: 1;
+            display: flex;
+            position: relative;
+            width: 100%;
+            margin:1px;
         }
         .activity p {
             margin: 0; /* Remove default margins for paragraphs */
@@ -668,7 +674,7 @@
                 } else {
                     checkTreener()
                     accountButtonDisplay()
-                    setCookie('username')
+                    document.getElementById('nimi').innerHTML = readCookie("username")
                 }
             } catch (error) {
                 console.error('Error in checkLogStatus:', error);
