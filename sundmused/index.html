@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voco Liikumine</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+
+        $(function(){
+            $("#includeFooter").load("../components/footers.html")
+
+        })
+
+    </script>
+    <style>
+        body{
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        #includeFooter{
+            margin-top:auto;
+        }
+        #newsDisplay {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center; /* Horizontally center the items */
+            align-items: center; /* Vertically center the items */
+        }
+
+        .news-card {
+            height: 400px;
+            min-height: 300px;
+            width: 400px;
+            min-width: 300px;
+            border: 1px solid;
+            margin: 10px; /* Add margin for spacing between cards */
+        }
+        img{
+            max-width:300px;
+            max-height:200px;
+        }
+        button{
+            position:relative;
+            bottom: 0;
+            right: 0;
+        }
+    </style>
+</head>
+<body>
+
+<div id="includeNavBar"></div>
+
+<!-- Your page content goes here -->
+<a id="newNews" href="lisa.html" style="display:none;">Lisa uus s端ndmus</a>
+<!-- Your page content ends here -->
+<div id="newsDisplay">
+
+</div>
+
+
+<div id="includeFooter"></div>
+
+<script src="https://kit.fontawesome.com/9616f6d837.js" crossorigin="anonymous"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                if(readCookie("role") == "t"){
+                    document.getElementById("newNews").style.display = "block";
+                }
+
+                document.getElementById("newsDisplay").innerHTML = this.responseText;
+            }
+        };
+
+        xhr.open("GET", "../src/Sundmused/get_Sundmused.php", true);
+        xhr.send();
+    })
+    function openSundmus(sundmusIndex) {
+        window.location.href = `sundmus.html?id=${sundmusIndex}`;
+    }
+    $(document).ready(function() {
+        $("#includeNavBar").load("../components/navbar.html", function () {
+            // Callback function - this runs after the content is loaded
+            checkLogStatus();
+        });
+        async function checkLogStatus() {
+            try {
+                logStatus = await readCookie("loggedIn");
+                console.log('Read cookie result:', logStatus);
+
+                if (!logStatus) {
+                    localStorage.clear();
+                    deleteAllCookies();
+                    loginButtonDisplay()
+                } else {
+                    accountButtonDisplay()
+                    document.getElementById('nimi').innerHTML = readCookie("username")
+                }
+            } catch (error) {
+                console.error('Error in checkLogStatus:', error);
+            }
+        }
+
+        function accountButtonDisplay() {
+            document.getElementById("account-btn").style.display = "block";
+            document.getElementById("login-btn").style.display = "none";
+        }
+    });
+</script>
+</body>
+</html>
