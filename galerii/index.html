@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <script src="../jquery.js"></script>
+
+    <script>
+        $(function () {
+            $("#includeNavBar").load("../components/navbar.html");
+            $("#includeFooter").load("../components/footers.html");
+        });
+    </script>
+</head>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+        height: 100vh;
+        background-color: #fff;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .gallery_container {
+        margin: 20px auto;
+        width: 900px;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        border-radius: 8px;
+    }
+
+    #top_container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+    }
+
+    #categorys {
+        display: flex;
+        gap: 10px;
+        overflow-x: auto; /* Allow horizontal scrolling */
+        margin-right: 10px; /* Adjust margin as needed */
+        flex-wrap: wrap; /* Allow categories to wrap to the next line */
+    }
+
+    .category_folder {
+        display: inline-block;
+        padding: 8px;
+        background-color: #fff;
+        border: 1px solid #000;
+        border-radius: 5px;
+        cursor: pointer;
+        white-space: nowrap; /* Prevent category text from wrapping to the next line */
+    }
+
+    .category_folder:hover {
+        background-color: #000;
+        color: #fff;
+    }
+
+    .category_folder i {
+        margin-right: 5px;
+    }
+
+    .add_button {
+        padding: 10px;
+        margin: 0 10px;
+        background-color: #000;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+    }
+
+    .add_button:hover {
+        background-color: #3f3f3f;
+    }
+
+
+    #add_toggle {
+        display: flex;
+        gap: 10px;
+        flex-direction: column;
+        align-items: flex-end;
+
+
+    }
+
+    .add_new_container {
+        display: none;
+        margin-top: 20px;
+    }
+
+    .add_new_container h2 {
+        margin-bottom: 10px;
+    }
+
+    .add_new_container label {
+        margin-bottom: 5px;
+    }
+
+    .add_new_container input {
+        margin-bottom: 10px;
+    }
+
+    .add_new_container input:focus {
+        outline: none;
+    }
+
+    .add_new_container button {
+        padding: 10px;
+        background-color: #000;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+    }
+
+    .add_new_container button:hover {
+        background-color: #3f3f3f;
+    }
+
+    #add-form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    #add-form button {
+        padding: 10px;
+        background-color: #000;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        margin-top: 15px;
+    }
+
+    #add-form button:hover {
+        background-color: #3f3f3f;
+    }
+
+
+    #add-form input {
+        padding: 10px;
+        border: 1px solid #000;
+    }
+
+    #add-form input:focus {
+        outline: none;
+    }
+
+    #add-form label {
+        display: block;
+    }
+
+    #add-form .custom-file-upload {
+        border: 1px solid #ccc;
+        padding: 6px 12px;
+        cursor: pointer;
+        max-width: 15%;
+        margin-top: 15px;
+    }
+
+    #add-form .custom-file-upload input {
+        display: none;
+    }
+
+    #add-form .custom-file-upload:hover {
+        background-color: #f9f9f9;
+    }
+
+
+    #bottom_container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow-x: auto; /* Allow horizontal scrolling */
+    }
+
+    #gallery {
+        display: flex;
+        gap: 10px;
+        white-space: nowrap; /* Prevent images from wrapping to the next line */
+        overflow-x: auto; /* Allow horizontal scrolling */
+    }
+
+    #gallery img {
+        width: 200px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 5px;
+    }
+
+    #gallery img:hover {
+        transform: scale(0.95);
+    }
+
+
+    .no-images-message {
+        color: black;
+    }
+
+    #category-suggestions {
+        position: absolute;
+        background-color: #fff;
+        border-radius: 5px;
+        max-height: 100px;
+        overflow-y: auto;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+    }
+
+    #category-suggestions div {
+        padding: 8px;
+        cursor: pointer;
+        /* make width as big as input */
+        width: 191px;
+
+
+    }
+
+    #category-suggestions div:hover {
+        background-color: #f9f9f9;
+    }
+
+    #file_message {
+        color: black;
+    }
+
+
+</style>
+
+
+<body>
+
+<div id="includeNavBar"></div>
+
+
+<div class="gallery_container">
+
+    <div id="top_container">
+        <div id="categorys"></div>
+
+        <div id="add_toggle">
+            <button class="add_button" onclick="toggleAddImage()">Add Image</button>
+            <button class="add_button" onclick="toggleAddCategory()">Add Category</button>
+        </div>
+
+    </div>
+
+    <div id="add-form">
+        <div class="add_new_container" id="add_img" style="display: none">
+            <h2>Add New Image</h2>
+            <label for="category_image">Category:</label>
+            <input type="text" id="category_image" placeholder="Enter category">
+            <div id="category-suggestions"></div>
+
+            <div id="upload_choice_buttons">
+                <button onclick="document.getElementById('upload_images_url').style.display = 'block'; document.getElementById('upload_images_file').style.display = 'none';">
+                    Upload Image URL
+                </button>
+                <button onclick="document.getElementById('upload_images_file').style.display = 'block'; document.getElementById('upload_images_url').style.display = 'none';">
+                    Upload Image File
+                </button>
+            </div>
+
+            <div style="display: none" id="upload_images_url">
+                <label for="image-url">Image URL:</label>
+                <input type="text" id="image-url" placeholder="Enter image URL">
+            </div>
+
+            <div style="display: none" id="upload_images_file">
+                <label for="upload" class="custom-file-upload">
+                    <input type="file" id="upload" name="upload" accept="image/*">
+                    Upload Image File</label>
+            </div>
+            <div id="file_message"></div>
+            <button onclick="addImage()">Add Image</button>
+        </div>
+        <div class="add_new_container" id="add_category" style="display: none">
+            <h2>Add New Category</h2>
+            <label for="category-name">Category Name:</label>
+            <input type="text" id="category-name" placeholder="Enter category name">
+            <button onclick="addCategory()">Add Category</button>
+        </div>
+    </div>
+</div>
+
+<div class="gallery_container">
+
+    <div id="bottom_container">
+        <div id="gallery"></div>
+    </div>
+
+
+</div>
+
+<div id="includeFooter"></div>
+
+</body>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+
+    function readCookie(cname) {
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0; i<ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0)==' ') c = c.substring(1);
+            if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+        }
+    }
+    $(document).ready(function() {
+        $("#includeNavBar").load("components/navbar.html", function () {
+            // Callback function - this runs after the content is loaded
+            checkLogStatus();
+        });
+        async function checkLogStatus() {
+            try {
+                logStatus = await readCookie("loggedIn");
+                console.log('Read cookie result:', logStatus);
+
+                if (!logStatus) {
+                    localStorage.clear();
+                    deleteAllCookies();
+                    loginButtonDisplay()
+                } else {
+                    accountButtonDisplay()
+                    document.getElementById('nimi').innerHTML = readCookie("username")
+                }
+            } catch (error) {
+                console.error('Error in checkLogStatus:', error);
+            }
+        }
+
+        function accountButtonDisplay() {
+            document.getElementById("account-btn").style.display = "flex";
+            document.getElementById("login-btn").style.display = "none";
+        }
+    });
+
+    function generateCategorys(responseData) {
+        // Get the category container element by ID
+        const categoryContainer = document.getElementById('categorys');
+        // Clear the existing content inside the container
+        categoryContainer.innerHTML = '';
+
+        // Add a category for 'All' - you can customize this as needed
+        // (you may need to implement the filterImages function accordingly)
+        const allCategoryButton = document.createElement('div');
+        allCategoryButton.className = 'category_folder';
+        allCategoryButton.innerHTML = `<i class="fas fa-folder"></i>All`;
+        allCategoryButton.onclick = () => filterImages('All');
+        categoryContainer.appendChild(allCategoryButton);
+
+        try {
+            // Parse the JSON data received from the server
+            const categoryData = JSON.parse(responseData);
+
+            // Check if the parsed data is an array
+            if (categoryData && Array.isArray(categoryData)) {
+                // Loop through each category in the array
+                categoryData.forEach(category => {
+                    // Extract folderName from the category
+                    const folderName = category.folderName;
+                    // Create a category button element
+                    const categoryButton = document.createElement('div');
+                    categoryButton.className = 'category_folder';
+                    // Set the inner HTML of the button
+                    categoryButton.innerHTML = `<i class="fas fa-folder"></i>${folderName}`;
+                    // Set the onclick event to filter images based on the folderName
+                    categoryButton.onclick = () => filterImages(folderName);
+                    // Append the category button to the category container
+                    categoryContainer.appendChild(categoryButton);
+                });
+            } else {
+                // Log an error if the data format is invalid
+                console.error('Invalid data format received from the server.');
+            }
+            filterImages('All');
+        } catch (error) {
+            // Log an error if there is an issue parsing the JSON data
+            console.error('Error parsing JSON data:', error);
+        }
+    }
+
+
+    generateCategorys();
+
+
+    function filterImages(category) {
+        const images = document.querySelectorAll('#gallery img');
+        images.forEach(image => {
+            if (category === 'All' || image.alt === category) {
+                image.style.display = 'block';
+            } else {
+                image.style.display = 'none';
+            }
+        });
+    }
+
+    function toggleAddImage() {
+        const addImage = document.getElementById('add_img');
+        const addCategory = document.getElementById('add_category');
+
+        addImage.style.display = addImage.style.display === 'none' ? 'block' : 'none';
+        addCategory.style.display = 'none';
+    }
+
+    function toggleAddCategory() {
+        const addImage = document.getElementById('add_img');
+        const addCategory = document.getElementById('add_category');
+
+        addCategory.style.display = addCategory.style.display === 'none' ? 'block' : 'none';
+        addImage.style.display = 'none';
+
+
+    }
+
+    document.getElementById('upload').addEventListener('change', function () {
+        const file = this.files[0];
+        const fileMessage = document.getElementById('file_message');
+
+        if (file) {
+            // use <p> between <div> to show message
+            fileMessage.textContent = `Selected file: ${file.name}`;
+        } else {
+            fileMessage.textContent = '';
+        }
+    });
+
+
+
+
+
+    function addImage() {
+        const category = document.getElementById('category_image').value;
+        const imageUrl = document.getElementById('image-url').value;
+        const file = document.getElementById('upload').files[0];
+
+        if (category === '') {
+            alert('Please enter a category');
+            return;
+        }
+
+        if (!file && imageUrl === '') {
+            alert('Please upload an image or enter an image URL');
+            return;
+        }
+
+        if (file && imageUrl !== '') {
+            alert('Please upload an image or enter an image URL, not both');
+            return;
+        }
+
+        // create a new formdata object for with category and file or image url
+        const formData = new FormData();
+        formData.append('category', category);
+        if (file) {
+            formData.append('file', file);
+        } else {
+            formData.append('imageUrl', imageUrl);
+        }
+
+        // Make a POST request to the PHP script
+        fetch('upload_image.php', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.text())
+            .then(message => {
+                alert(message); // Display the response message
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+    const categoryButton = document.createElement('div');
+
+    categoryButton.onclick = function () {
+        const categoryName = document.getElementById('category-name').value;
+        filterImages(categoryName);
+        document.querySelectorAll('.category_folder').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        categoryButton.classList.add('active');
+    };
+
+    function addCategory() {
+        const categoryName = document.getElementById('category-name').value;
+
+        if (categoryName === '') {
+            alert('Please enter a category name');
+            return;
+        }
+
+        // Send the new category to the backend PHP file using XMLHttpRequest
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "../src/Galerii/add_new.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                // Handle the server response
+                if (xhr.responseText === "success") {
+                    alert("Category added successfully");
+
+                    // Add the new category to the category container
+                    const categoryButton = document.createElement('div');
+                    categoryButton.className = 'category_folder';
+                    categoryButton.innerHTML = `<i class="fas fa-folder"></i>${categoryName}`;
+                    categoryButton.onclick = function () {
+                        filterImages(categoryName);
+                        document.querySelectorAll('.category_folder').forEach(btn => {
+                            btn.classList.remove('active');
+                        });
+                        categoryButton.classList.add('active');
+                    };
+
+                    // Append the new category to the category container
+                    const categoryContainer = document.getElementById('categorys'); // Change 'category-container' to 'categorys'
+                    categoryContainer.appendChild(categoryButton);
+
+
+                } else if (xhr.responseText === "exists") {
+                    alert("Category folder already exists");
+                } else if (xhr.responseText === "invalid") {
+                    alert("Invalid category name");
+                } else {
+                    alert("Error: " + xhr.responseText);
+                }
+            }
+        };
+        xhr.send("category=" + categoryName);
+    }
+
+
+    // category choices are generated to add image category choice part. you keep writing and suggestions are shown
+
+
+    const categoryInput = document.getElementById('category_image');
+    const categorySuggestions = document.getElementById('category-suggestions');
+
+    categoryInput.addEventListener('input', function () {
+        const category = categoryInput.value;
+        categorySuggestions.innerHTML = '';
+
+        // Make all <a> values that has class category_folder into an array
+        const categoryButtons = Array.from(document.querySelectorAll('.category_folder'));
+        // Filter the category buttons based on the input value, excluding "All"
+        const filteredCategories = categoryButtons.filter(button => {
+            return button.textContent.toLowerCase().includes(category.toLowerCase()) && button.textContent.toLowerCase() !== 'all';
+        });
+
+        // Loop through the filtered categories and add them to the suggestions container
+        filteredCategories.forEach(button => {
+            const suggestion = document.createElement('div');
+            suggestion.textContent = button.textContent;
+            suggestion.onclick = function () {
+                categoryInput.value = button.textContent;
+                categorySuggestions.innerHTML = '';
+            };
+            categorySuggestions.appendChild(suggestion);
+        });
+        // also make that if i press somewhere else then suggestions are hidden
+        document.addEventListener('click', function (e) {
+            if (e.target !== categoryInput) {
+                categorySuggestions.innerHTML = '';
+            }
+        });
+    });
+
+
+
+
+    function fetchImages() {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "../src/Galerii/fetch_images.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    // Handle the successful response here
+                    var responseData = xhr.responseText;
+                    console.log("Data received:", responseData);
+
+                    generateImages(responseData);
+                    generateCategorys(responseData)
+
+
+                    // Now you can process the data as needed
+                    // For example, update the UI or perform other actions
+                } else {
+                    // Handle errors or non-200 status codes here
+                    console.error("Error:", xhr.status, xhr.statusText);
+                }
+            }
+        };
+
+        xhr.send();
+    }
+
+    // Call the function to initiate the request
+    fetchImages();
+
+    function generateImages(responseData) {
+        const gallery = document.getElementById('gallery');
+        gallery.innerHTML = '';
+
+        try {
+            const categoryData = JSON.parse(responseData);
+
+            if (categoryData && Array.isArray(categoryData)) {
+                categoryData.forEach(category => {
+                    const folderName = category.folderName;
+                    const images = category.images;
+
+                    images.forEach(image => {
+                        const img = document.createElement('img');
+                        img.src = '../src/Galerii/' + image;
+                        img.alt = folderName;
+                        img.id = image + "_" + folderName;
+                        gallery.appendChild(img);
+                    });
+                });
+            } else {
+                console.error('Invalid data format received from the server.');
+            }
+        } catch (error) {
+            console.error('Error parsing JSON data:', error);
+        }
+    }
+
+    // open imagees in new tab
+    document.getElementById('gallery').addEventListener('click', function (e) {
+        if (e.target.tagName === 'IMG') {
+            window.open(e.target.src, '_blank');
+        }
+    });
+
+
+    let deleteMode = false;
+    let selectedItems = [];
+
+    function selectDelete() {
+        deleteMode = true;
+        const deleteButton = document.querySelector('.add_button');
+        deleteButton.textContent = 'Cancel';
+        deleteButton.onclick = cancelDelete;
+
+        const confirmButton = document.createElement('button');
+        confirmButton.textContent = 'Confirm';
+        confirmButton.className = 'add_button';
+        confirmButton.onclick = confirmDelete;
+        document.getElementById('add_toggle').appendChild(confirmButton);
+
+        const categoryFolders = document.querySelectorAll('.category_folder');
+        categoryFolders.forEach(folder => {
+            folder.onclick = () => selectItem(folder.textContent.trim());
+        });
+
+        const images = document.querySelectorAll('#gallery img');
+        images.forEach(image => {
+            image.onclick = () => selectItem(image.alt.trim());
+        });
+    }
+
+    function cancelDelete() {
+        deleteMode = false;
+        selectedItems = [];
+
+    }
+
+    function selectItem(item) {
+        const index = selectedItems.indexOf(item);
+        if (index === -1) {
+            selectedItems.push(item);
+        } else {
+            selectedItems.splice(index, 1);
+        }
+    }
+
+    function confirmDelete() {
+        // Here you can write code to delete the selected items
+        console.log('Selected items to delete:', selectedItems);
+        // After deletion, you may want to refresh the gallery or perform other actions
+        cancelDelete(); // Reset delete mode
+    }
+
+    // Rest of your existing JavaScript code...
+
+
+</script>
+</html>
