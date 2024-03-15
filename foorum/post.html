@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Voco Liikumine</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script>
 
@@ -16,6 +15,14 @@
 
     </script>
     <style>
+        body{
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        #includeFooter{
+            margin-top:auto;
+        }
         #post-container {
             max-width: 600px;
             margin: 0 auto;
@@ -74,7 +81,7 @@
                     loginButtonDisplay()
                 } else {
                     accountButtonDisplay()
-                    setCookie('username')
+                    document.getElementById('nimi').innerHTML = readCookie("username")
                 }
             } catch (error) {
                 console.error('Error in checkLogStatus:', error);
@@ -96,19 +103,13 @@
     });
 
 
-    function getPostById(postId) {
-        return posts.find(post => post.id === parseInt(postId));
-    }
-
     async function renderPostAndComments(ID) {
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "../src/Foorum/getPost.php", true);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
-                console.log(this.responseText)
                 const post = JSON.parse(this.responseText)[0];
-                console.log(post)
                 if (post) {
                     const overlay = document.getElementById("overlay")
                     overlay.innerHTML = `
@@ -131,7 +132,6 @@
 
     }
     async function handleComments(ID){
-
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "../src/Foorum/getComments.php", true);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -155,13 +155,22 @@
         };
         xhr.send("PostID=" + encodeURIComponent(ID));
     }
-    function submitComment(postId) {
+    async function submitComment(postId) {
         const commentContent = document.getElementById("comment-content").value;
         console.log(postId)
+        logStatus = await readCookie("loggedIn");
+        var postURL = ""
+        if (logStatus){
+            var postURL = "../src/Foorum/newComment.php"
+            console.log(postURL)
 
+        } else {
+            var postURL = "../src/Foorum/newGuestComment.php"
+            console.log(postURL)
+        }
         if (commentContent) {
             var xhr = new XMLHttpRequest();
-            xhr.open("POST", "../src/Foorum/newComment.php", true);
+            xhr.open("POST", postURL, true);
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4) {
